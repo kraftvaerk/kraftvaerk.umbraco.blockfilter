@@ -11,5 +11,8 @@ export type BlockCatalogueModel = {
     openClipboard: boolean;
     originData: OriginData;
     createBlockInWorkspace: boolean;
+    pageId?: string | null;
+    pageTypeId?: string | null;
+    editingAlias?: string | null;
 };
 

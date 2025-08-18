@@ -8,20 +8,19 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class V1Service {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @returns string OK
+     * @returns any OK
      * @throws ApiError
      */
     public postApiV1BlockfilterRemodel({
         requestBody,
     }: {
         requestBody?: BlockCatalogueModel,
-    }): CancelablePromise<string> {
+    }): CancelablePromise<BlockCatalogueModel> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/v1/blockfilter/remodel',
             body: requestBody,
             mediaType: 'application/json',
-            responseHeader: 'Umb-Notifications',
             errors: {
                 401: `The resource is protected and requires an authentication token`,
             },

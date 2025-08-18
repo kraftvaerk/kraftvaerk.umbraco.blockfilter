@@ -8,6 +8,7 @@ using kraftvaerk.umbraco.blockfilter.Backend.Models;
 using kraftvaerk.umbraco.blockfilter.Backend.Notifications;
 using kraftvaerk.umbraco.blockfilter.Backend.PackageConstants;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Api.Common.Attributes;
 using Umbraco.Cms.Api.Common.Filters;
@@ -41,6 +42,7 @@ public class BlockFilterController : Controller
     }
 
     [HttpPost("remodel")]
+    [ProducesResponseType(typeof(BlockCatalogueModel), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remodel([FromBody] BlockCatalogueModel model)
     {
         using ICoreScope scope = _coreScopeProvider.CreateCoreScope();

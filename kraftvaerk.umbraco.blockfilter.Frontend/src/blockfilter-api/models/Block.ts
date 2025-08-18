@@ -8,7 +8,7 @@ export type Block = {
     allowAtRoot: boolean;
     allowInAreas: boolean;
     groupKey: string;
-    areas: Array<Area>;
+    areas?: Array<Area> | null;
     areaGridColumns?: number | null;
 };
 

@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type OriginData = {
     index: number;
-    areaKey: any;
-    parentUnique: any;
+    areaKey?: any;
+    parentUnique?: any;
 };
 
