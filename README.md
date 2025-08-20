@@ -10,6 +10,12 @@ With Block Filter – and its `RemodelBlockCatalogueNotification` handler – th
 
 ---
 
+## 🏷️ Version support
+
+Block filter is compatible with Umbraco 16.0 and later versions.
+
+---
+
 ## 🚀 Installation
 You can install Block Filter via NuGet:
 
