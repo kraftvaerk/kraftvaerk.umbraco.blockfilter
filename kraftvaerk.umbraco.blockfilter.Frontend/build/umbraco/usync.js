@@ -20,7 +20,7 @@ export default function syncUsync() {
 
     // Loop through each Umbraco folder to find the uSync folder
     umbracoFolders.forEach(folder => {
-        const usyncPath = join(folder, 'usync', 'v14');
+        const usyncPath = join(folder, 'usync', 'v16');
 
         if (existsSync(usyncPath)) {
             // Get the newest file in the usync/v14 folder and its subfolders

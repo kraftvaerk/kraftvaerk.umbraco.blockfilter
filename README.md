@@ -10,7 +10,7 @@ With Block Filter – and its `RemodelBlockCatalogueNotification` handler – th
 
 ---
 
-## 🚀 Installation (TODO)
+## 🚀 Installation
 You can install Block Filter via NuGet:
 
 ```bash

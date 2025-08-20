@@ -52,10 +52,14 @@ public class BlockFilterController : Controller
         foreach(var block in model.Blocks)
         {
             var ct = _contentTypeService.Get(Guid.Parse(block.ContentElementTypeKey));
-            block.Alias = ct.Alias;
+            block.Alias = ct?.Alias;
         }
 
-        model.ContentTypeAlias = _contentTypeService.Get(Guid.Parse(model.ContentTypeId)).Alias;
+        if(model.ContentTypeId != null)
+        {
+            model.ContentTypeAlias = _contentTypeService.Get(Guid.Parse(model.ContentTypeId))?.Alias;
+        }
+        
 
         var notification = new RemodelBlockCatalogueNotification(model);
         await scope.Notifications.PublishCancelableAsync(notification);
