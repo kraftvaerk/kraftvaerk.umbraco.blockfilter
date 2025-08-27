@@ -37,7 +37,7 @@ namespace kraftvaerk.umbraco.blockfilter.Backend.Models
         public bool AllowInAreas { get; set; }
 
         [JsonPropertyName("groupKey")]
-        public string GroupKey { get; set; } = default!;
+        public string? GroupKey { get; set; } = default!;
 
         [JsonPropertyName("areas")]
         public List<Area>? Areas { get; set; }

@@ -3,8 +3,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>kraftvaerk.umbraco.blockfilter</PackageId>
-    <Title>kraftvaerk.umbraco.blockfilter</Title>
+    <PackageId>Kraftvaerk.Umbraco.Blockfilter</PackageId>
+    <Title>Kraftvaerk.Umbraco.Blockfilter</Title>
     <Authors>Kraftvaerk,Kaspar Boel Kjeldsen</Authors>
 	<Company>Kraftvaerk</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -12,7 +12,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>$(OutputPath)</PackageOutputPath>
-    <Version>1.1.0</Version>
+    <Version>1.1.2</Version>
 	<PackageIcon>logo.png</PackageIcon>
 	<PackageProjectUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.blockfilter</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.blockfilter</RepositoryUrl>
