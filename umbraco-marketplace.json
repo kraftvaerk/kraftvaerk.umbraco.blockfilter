@@ -1,0 +1,41 @@
+{
+  "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+  "Category": "Editor Tools",
+  "AlternateCategory": "Developer Tools",
+  "Title": "Kraftvaerk Umbraco Block Filter",
+  "Description": "Filter available blocks dynamically based on user, content type, or any custom logic in the block catalogue modal.",
+  "AuthorDetails": {
+    "Name": "Kraftvaerk",
+    "Description": "Don't leave digital to chance. Leave it to us.",
+    "Url": "https://kraftvaerk.com",
+    "ImageUrl": "https://github.com/kraftvaerk.png",
+    "Contributors": [
+      { "Name": "Kaspar Boel Kjeldsen" }
+    ]
+  },
+  "LicenseTypes": [ "Free" ],
+  "PackageType": "Package",
+  "RelatedPackages": [
+    { "PackageId": "Kraftvaerk.Umbraco.Headless.Preview", "GroupTitle": "Headless Extensions", "Description": "Provides a preview pipeline for headless content." },
+    { "PackageId": "Kraftvaerk.Umbraco.Headless.CacheKeys", "Description": "Shared cache key utilities for headless implementations." },
+    { "PackageId": "Kraftvaerk.Umbraco.Headless.BlockPreview", "Description": "Enables block-level preview capabilities in headless scenarios." }
+  ],
+  "PackagesByAuthor": [
+    "Kraftvaerk.Umbraco.Headless.Preview",
+    "Kraftvaerk.Umbraco.Headless.CacheKeys",
+    "Kraftvaerk.Umbraco.Headless.BlockPreview"
+  ],
+  "Screenshots": [
+    { "ImageUrl": "https://raw.githubusercontent.com/kraftvaerk/kraftvaerk.umbraco.blockfilter/main/Images/logo.png", "Caption": "Package logo" }
+  ],
+  "Tags": [
+    "umbraco",
+    "plugin",
+    "package",
+    "umbraco-marketplace",
+    "blocks",
+    "block filtering",
+    "editor tools"
+  ],
+  "VersionDependencyMode": "Default"
+}
