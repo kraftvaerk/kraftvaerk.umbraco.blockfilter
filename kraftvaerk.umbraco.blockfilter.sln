@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34728.123
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11012.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kraftvaerk.umbraco.blockfilter.Backend", "kraftvaerk.umbraco.blockfilter.Backend\kraftvaerk.umbraco.blockfilter.Backend.csproj", "{5B813CB5-0008-49C6-8CE5-72A0D38820DC}"
 EndProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Umbraco", "Umbraco", "{5CFD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco-16.1.1", "Umbraco\Umbraco-16.1.1\Umbraco-16.1.1.csproj", "{87D0E670-9190-4129-9D1C-E386E35C0473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco-16.1.1-nuget", "Umbraco\Umbraco-16.1.1-nuget\Umbraco-16.1.1-nuget.csproj", "{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco-16.2.0-nuget", "Umbraco\Umbraco-16.2.0-nuget\Umbraco-16.2.0-nuget.csproj", "{23CD2351-9A69-4170-A6F4-61781A419838}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,25 +57,25 @@ Global
 		{87D0E670-9190-4129-9D1C-E386E35C0473}.Release|x64.Build.0 = Release|Any CPU
 		{87D0E670-9190-4129-9D1C-E386E35C0473}.Release|x86.ActiveCfg = Release|Any CPU
 		{87D0E670-9190-4129-9D1C-E386E35C0473}.Release|x86.Build.0 = Release|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Debug|x64.Build.0 = Debug|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Debug|x86.Build.0 = Debug|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Release|x64.ActiveCfg = Release|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Release|x64.Build.0 = Release|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD}.Release|x86.Build.0 = Release|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Debug|x64.Build.0 = Debug|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Debug|x86.Build.0 = Debug|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Release|x64.ActiveCfg = Release|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Release|x64.Build.0 = Release|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Release|x86.ActiveCfg = Release|Any CPU
+		{23CD2351-9A69-4170-A6F4-61781A419838}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{87D0E670-9190-4129-9D1C-E386E35C0473} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
-		{DB7F3149-3740-48F6-9A8D-DF0ECF0E18AD} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
+		{23CD2351-9A69-4170-A6F4-61781A419838} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7EF47476-2DE6-4B08-B6B2-EE0B869985AB}

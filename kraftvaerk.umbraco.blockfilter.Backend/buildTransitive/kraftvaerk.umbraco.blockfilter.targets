@@ -9,12 +9,12 @@
 			<PackageReferenceProjectContentFiles Include="$(PackageReferenceProjectContentFilesPath)" />
 		</ItemGroup>
 		<Message Text="Copying kraftvaerk.umbraco.blockfilter files: $(PackageReferenceProjectContentFilesPath) - #@(PackageReferenceProjectContentFiles->Count()) files" Importance="high" />
-		<Copy SourceFiles="@(PackageReferenceProjectContentFiles)" DestinationFiles="@(PackageReferenceProjectContentFiles->'$(MSBuildProjectDirectory)\wwwroot\app_plugins\kraftvaerk.umbraco.blockfilter.frontend\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(PackageReferenceProjectContentFiles)" DestinationFiles="@(PackageReferenceProjectContentFiles->'$(MSBuildProjectDirectory)\wwwroot\App_Plugins\kraftvaerk.umbraco.blockfilter.frontend\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
 	</Target>
 
 	<Target Name="ClearPackageReferenceProjectAssets" BeforeTargets="Clean">
 		<ItemGroup>
-			<PackageReferenceProjectDir Include="$(MSBuildProjectDirectory)\wwwroot\app_plugins\kraftvaerk.umbraco.blockfilter.frontend\" />
+			<PackageReferenceProjectDir Include="$(MSBuildProjectDirectory)\wwwroot\App_Plugins\kraftvaerk.umbraco.blockfilter.frontend\" />
 		</ItemGroup>
 		<Message Text="Clear old kraftvaerk.umbraco.blockfilter data" Importance="high" />
 		<RemoveDir Directories="@(PackageReferenceProjectDir)" />

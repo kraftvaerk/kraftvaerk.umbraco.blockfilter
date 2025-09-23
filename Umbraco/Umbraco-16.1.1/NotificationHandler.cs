@@ -11,6 +11,13 @@ public class NotificationHandler : INotificationAsyncHandler<RemodelBlockCatalog
     {
 
     }
+
+    /// <summary>
+    /// Example rule - remove 
+    /// </summary>
+    /// <param name="notification"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task HandleAsync(RemodelBlockCatalogueNotification notification, CancellationToken cancellationToken)
     {
         // these are only allowed if the user is an admin

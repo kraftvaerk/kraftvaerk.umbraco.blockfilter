@@ -3,13 +3,14 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Umbraco_16._1._1_nuget</RootNamespace>
+    <RootNamespace>Umbraco_16._2._0_nuget</RootNamespace>
     <CompressionEnabled>false</CompressionEnabled> <!-- Disable compression. E.g. for umbraco backoffice files. These files should be precompressed by node and not let dotnet handle it -->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="kraftvaerk.umbraco.blockfilter" Version="1.0.12" />
-    <PackageReference Include="Umbraco.Cms" Version="16.1.1" />
+    <PackageReference Include="Kraftvaerk.Umbraco.Blockfilter" Version="1.1.4" />
+    <PackageReference Include="Umbraco.Cms" Version="16.2.0" />
+    <PackageReference Include="uSync" Version="16.0.5" />
   </ItemGroup>
 
   <ItemGroup>
