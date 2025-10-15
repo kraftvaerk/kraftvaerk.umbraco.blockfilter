@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Kraftvaerk.Umbraco.Blockfilter</PackageId>
@@ -12,7 +12,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageOutputPath>$(OutputPath)</PackageOutputPath>
-    <Version>1.1.4</Version>
+    <Version>1.2.0</Version>
 	<PackageIcon>logo.png</PackageIcon>
 	<PackageProjectUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.blockfilter</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/kraftvaerk/kraftvaerk.umbraco.blockfilter</RepositoryUrl>
@@ -25,8 +25,11 @@
     <Folder Include="Options\" />
     <Folder Include="Services\" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <PackageReference Include="Umbraco.Cms" Version="[16.0.0, 17.0.0)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+	  <PackageReference Include="Umbraco.Cms" Version="[17.0.0-beta, 18.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ui\**" Pack="true" PackagePath="content\ui" />

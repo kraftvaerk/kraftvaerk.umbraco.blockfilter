@@ -12,7 +12,7 @@ With Block Filter – and its `RemodelBlockCatalogueNotification` handler – th
 
 ## 🏷️ Version support
 
-Block filter is compatible with Umbraco 16.0 and later versions.
+Block filter is compatible with Umbraco 16.0 and later versions (including v17.0.0-beta).
 
 ---
 
