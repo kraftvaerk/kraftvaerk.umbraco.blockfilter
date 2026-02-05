@@ -10,7 +10,7 @@ const modalAlias = 'Umb.Modal.BlockCatalogue';
 const manifests: ManifestModal[] = [
   {
     type: 'modal',
-    // This alias is the key. We’re overriding the core catalogue by reusing its alias.
+    // This alias is the key. We're overriding the core catalogue by reusing its alias.
     // If the alias ever changes upstream, update this to match.
     alias: modalAlias,
 
