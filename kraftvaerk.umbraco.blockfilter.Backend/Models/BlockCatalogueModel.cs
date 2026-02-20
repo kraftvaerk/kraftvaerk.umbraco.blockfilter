@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Umbraco.Cms.Core.Models.Membership;
 
 namespace kraftvaerk.umbraco.blockfilter.Backend.Models
@@ -44,6 +43,9 @@ namespace kraftvaerk.umbraco.blockfilter.Backend.Models
 
         [JsonPropertyName("areaGridColumns")]
         public int? AreaGridColumns { get; set; }
+
+        [JsonPropertyName("thumbnail")]
+        public string? Thumbnail { get; set; }
 
         [JsonIgnore]
         public string? Alias { get; set; }
