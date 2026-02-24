@@ -1,4 +1,4 @@
-import { UmbBlockCatalogueModalData, UmbBlockCatalogueModalElement } from "@umbraco-cms/backoffice/block";
+import { UmbBlockCatalogueModalData, UmbBlockCatalogueModalElement, UMB_BLOCK_WORKSPACE_CONTEXT } from "@umbraco-cms/backoffice/block";
 import { UMB_DOCUMENT_WORKSPACE_CONTEXT } from "@umbraco-cms/backoffice/document";
 import { UMB_VARIANT_WORKSPACE_CONTEXT } from "@umbraco-cms/backoffice/workspace";
 import { customElement } from "lit/decorators.js";
@@ -14,21 +14,29 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
   #pageType = '';
   #modalData: unknown | null = null;
   #handled = false;
-  
+
   // Allowed block keys from API - null means not yet loaded
   #allowedKeys: string[] | null = null;
   #originalClipboardFilter: ((clipboardEntryDetail: any) => Promise<boolean>) | undefined;
-  
+
   // Promise that resolves when allowed keys are ready
   #keysReadyPromise: Promise<void>;
   #keysReadyResolve!: () => void;
 
   constructor() {
     super();
-    
+
     // Create promise that will resolve when handleBlocks() sets allowed keys
     this.#keysReadyPromise = new Promise((resolve) => {
       this.#keysReadyResolve = resolve;
+    });
+
+    this.consumeContext(UMB_BLOCK_WORKSPACE_CONTEXT, (workspaceContext) => {
+      this.#unique = workspaceContext?.getUnique() ?? '';
+      this.observe(workspaceContext?.contentKey, (value) => {
+        this.#pageType = value ?? '';
+        this.#tryHandle();
+      });
     });
 
     this.consumeContext(UMB_VARIANT_WORKSPACE_CONTEXT, (workspaceContext) => {
@@ -69,10 +77,10 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
    * If keys aren't loaded yet, blocks all clipboard entries until handleBlocks() completes.
    */
   #installClipboardFilterWrapper() {
-    
+
     if (!this.data || this.#originalClipboardFilter !== undefined) return;
     this.#originalClipboardFilter = this.data.clipboardFilter;
-    
+
     // Clone data to make it writable (Umbraco freezes the original)
     this.data = { ...this.data };
 
