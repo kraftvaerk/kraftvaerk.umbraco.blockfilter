@@ -2,13 +2,13 @@ var Q = (e) => {
   throw TypeError(e);
 };
 var Y = (e, t, s) => t.has(e) || Q("Cannot " + s);
-var h = (e, t, s) => (Y(e, t, "read from private field"), s ? s.call(e) : t.get(e)), S = (e, t, s) => t.has(e) ? Q("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), u = (e, t, s, r) => (Y(e, t, "write to private field"), r ? r.call(e, s) : t.set(e, s), s);
-import { UmbBlockCatalogueModalElement as ut } from "@umbraco-cms/backoffice/block";
-import { UMB_DOCUMENT_WORKSPACE_CONTEXT as pt } from "@umbraco-cms/backoffice/document";
-import { UMB_VARIANT_WORKSPACE_CONTEXT as yt } from "@umbraco-cms/backoffice/workspace";
-import { UMB_MODAL_CONTEXT as ft } from "@umbraco-cms/backoffice/modal";
-import { O as Z } from "./index-drPm5jqt.js";
-class Et {
+var h = (e, t, s) => (Y(e, t, "read from private field"), s ? s.call(e) : t.get(e)), b = (e, t, s) => t.has(e) ? Q("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), u = (e, t, s, r) => (Y(e, t, "write to private field"), r ? r.call(e, s) : t.set(e, s), s);
+import { UmbBlockCatalogueModalElement as ut, UMB_BLOCK_WORKSPACE_CONTEXT as pt } from "@umbraco-cms/backoffice/block";
+import { UMB_DOCUMENT_WORKSPACE_CONTEXT as yt } from "@umbraco-cms/backoffice/document";
+import { UMB_VARIANT_WORKSPACE_CONTEXT as ft } from "@umbraco-cms/backoffice/workspace";
+import { UMB_MODAL_CONTEXT as Et } from "@umbraco-cms/backoffice/modal";
+import { O as Z } from "./index-BUjUVvjl.js";
+class mt {
   constructor(t) {
     this.config = t;
   }
@@ -18,7 +18,7 @@ class tt extends Error {
     super(r), this.name = "ApiError", this.url = s.url, this.status = s.status, this.statusText = s.statusText, this.body = s.body, this.request = t;
   }
 }
-class mt extends Error {
+class _t extends Error {
   constructor(t) {
     super(t), this.name = "CancelError";
   }
@@ -26,31 +26,31 @@ class mt extends Error {
     return !0;
   }
 }
-var E, m, p, $, C, P, w;
-class _t {
+var m, _, y, $, T, U, w;
+class St {
   constructor(t) {
-    S(this, E);
-    S(this, m);
-    S(this, p);
-    S(this, $);
-    S(this, C);
-    S(this, P);
-    S(this, w);
-    u(this, E, !1), u(this, m, !1), u(this, p, !1), u(this, $, []), u(this, C, new Promise((s, r) => {
-      u(this, P, s), u(this, w, r);
+    b(this, m);
+    b(this, _);
+    b(this, y);
+    b(this, $);
+    b(this, T);
+    b(this, U);
+    b(this, w);
+    u(this, m, !1), u(this, _, !1), u(this, y, !1), u(this, $, []), u(this, T, new Promise((s, r) => {
+      u(this, U, s), u(this, w, r);
       const i = (o) => {
-        h(this, E) || h(this, m) || h(this, p) || (u(this, E, !0), h(this, P) && h(this, P).call(this, o));
+        h(this, m) || h(this, _) || h(this, y) || (u(this, m, !0), h(this, U) && h(this, U).call(this, o));
       }, n = (o) => {
-        h(this, E) || h(this, m) || h(this, p) || (u(this, m, !0), h(this, w) && h(this, w).call(this, o));
+        h(this, m) || h(this, _) || h(this, y) || (u(this, _, !0), h(this, w) && h(this, w).call(this, o));
       }, a = (o) => {
-        h(this, E) || h(this, m) || h(this, p) || h(this, $).push(o);
+        h(this, m) || h(this, _) || h(this, y) || h(this, $).push(o);
       };
       return Object.defineProperty(a, "isResolved", {
-        get: () => h(this, E)
-      }), Object.defineProperty(a, "isRejected", {
         get: () => h(this, m)
+      }), Object.defineProperty(a, "isRejected", {
+        get: () => h(this, _)
       }), Object.defineProperty(a, "isCancelled", {
-        get: () => h(this, p)
+        get: () => h(this, y)
       }), t(i, n, a);
     }));
   }
@@ -58,17 +58,17 @@ class _t {
     return "Cancellable Promise";
   }
   then(t, s) {
-    return h(this, C).then(t, s);
+    return h(this, T).then(t, s);
   }
   catch(t) {
-    return h(this, C).catch(t);
+    return h(this, T).catch(t);
   }
   finally(t) {
-    return h(this, C).finally(t);
+    return h(this, T).finally(t);
   }
   cancel() {
-    if (!(h(this, E) || h(this, m) || h(this, p))) {
-      if (u(this, p, !0), h(this, $).length)
+    if (!(h(this, m) || h(this, _) || h(this, y))) {
+      if (u(this, y, !0), h(this, $).length)
         try {
           for (const t of h(this, $))
             t();
@@ -76,25 +76,25 @@ class _t {
           console.warn("Cancellation threw an error", t);
           return;
         }
-      h(this, $).length = 0, h(this, w) && h(this, w).call(this, new mt("Request aborted"));
+      h(this, $).length = 0, h(this, w) && h(this, w).call(this, new _t("Request aborted"));
     }
   }
   get isCancelled() {
-    return h(this, p);
+    return h(this, y);
   }
 }
-E = new WeakMap(), m = new WeakMap(), p = new WeakMap(), $ = new WeakMap(), C = new WeakMap(), P = new WeakMap(), w = new WeakMap();
-const F = (e) => e != null, j = (e) => typeof e == "string", L = (e) => j(e) && e !== "", V = (e) => typeof e == "object" && typeof e.type == "string" && typeof e.stream == "function" && typeof e.arrayBuffer == "function" && typeof e.constructor == "function" && typeof e.constructor.name == "string" && /^(Blob|File)$/.test(e.constructor.name) && /^(Blob|File)$/.test(e[Symbol.toStringTag]), nt = (e) => e instanceof FormData, St = (e) => {
+m = new WeakMap(), _ = new WeakMap(), y = new WeakMap(), $ = new WeakMap(), T = new WeakMap(), U = new WeakMap(), w = new WeakMap();
+const V = (e) => e != null, j = (e) => typeof e == "string", K = (e) => j(e) && e !== "", x = (e) => typeof e == "object" && typeof e.type == "string" && typeof e.stream == "function" && typeof e.arrayBuffer == "function" && typeof e.constructor == "function" && typeof e.constructor.name == "string" && /^(Blob|File)$/.test(e.constructor.name) && /^(Blob|File)$/.test(e[Symbol.toStringTag]), nt = (e) => e instanceof FormData, bt = (e) => {
   try {
     return btoa(e);
   } catch {
     return Buffer.from(e).toString("base64");
   }
-}, bt = (e) => {
+}, $t = (e) => {
   const t = [], s = (i, n) => {
     t.push(`${encodeURIComponent(i)}=${encodeURIComponent(String(n))}`);
   }, r = (i, n) => {
-    F(n) && (Array.isArray(n) ? n.forEach((a) => {
+    V(n) && (Array.isArray(n) ? n.forEach((a) => {
       r(i, a);
     }) : typeof n == "object" ? Object.entries(n).forEach(([a, o]) => {
       r(`${i}[${a}]`, o);
@@ -103,22 +103,22 @@ const F = (e) => e != null, j = (e) => typeof e == "string", L = (e) => j(e) && 
   return Object.entries(e).forEach(([i, n]) => {
     r(i, n);
   }), t.length > 0 ? `?${t.join("&")}` : "";
-}, $t = (e, t) => {
+}, wt = (e, t) => {
   const s = e.ENCODE_PATH || encodeURI, r = t.url.replace("{api-version}", e.VERSION).replace(/{(.*?)}/g, (n, a) => {
     var o;
     return (o = t.path) != null && o.hasOwnProperty(a) ? s(String(t.path[a])) : n;
   }), i = `${e.BASE}${r}`;
-  return t.query ? `${i}${bt(t.query)}` : i;
-}, wt = (e) => {
+  return t.query ? `${i}${$t(t.query)}` : i;
+}, At = (e) => {
   if (e.formData) {
     const t = new FormData(), s = (r, i) => {
-      j(i) || V(i) ? t.append(r, i) : t.append(r, JSON.stringify(i));
+      j(i) || x(i) ? t.append(r, i) : t.append(r, JSON.stringify(i));
     };
-    return Object.entries(e.formData).filter(([r, i]) => F(i)).forEach(([r, i]) => {
+    return Object.entries(e.formData).filter(([r, i]) => V(i)).forEach(([r, i]) => {
       Array.isArray(i) ? i.forEach((n) => s(r, n)) : s(r, i);
     }), t;
   }
-}, q = async (e, t) => typeof t == "function" ? t(e) : t, At = async (e, t) => {
+}, q = async (e, t) => typeof t == "function" ? t(e) : t, vt = async (e, t) => {
   const [s, r, i, n] = await Promise.all([
     q(t, e.TOKEN),
     q(t, e.USERNAME),
@@ -128,28 +128,28 @@ const F = (e) => e != null, j = (e) => typeof e == "string", L = (e) => j(e) && 
     Accept: "application/json",
     ...n,
     ...t.headers
-  }).filter(([o, l]) => F(l)).reduce((o, [l, d]) => ({
+  }).filter(([o, c]) => V(c)).reduce((o, [c, d]) => ({
     ...o,
-    [l]: String(d)
+    [c]: String(d)
   }), {});
-  if (L(s) && (a.Authorization = `Bearer ${s}`), L(r) && L(i)) {
-    const o = St(`${r}:${i}`);
+  if (K(s) && (a.Authorization = `Bearer ${s}`), K(r) && K(i)) {
+    const o = bt(`${r}:${i}`);
     a.Authorization = `Basic ${o}`;
   }
-  return t.body !== void 0 && (t.mediaType ? a["Content-Type"] = t.mediaType : V(t.body) ? a["Content-Type"] = t.body.type || "application/octet-stream" : j(t.body) ? a["Content-Type"] = "text/plain" : nt(t.body) || (a["Content-Type"] = "application/json")), new Headers(a);
-}, vt = (e) => {
+  return t.body !== void 0 && (t.mediaType ? a["Content-Type"] = t.mediaType : x(t.body) ? a["Content-Type"] = t.body.type || "application/octet-stream" : j(t.body) ? a["Content-Type"] = "text/plain" : nt(t.body) || (a["Content-Type"] = "application/json")), new Headers(a);
+}, Ot = (e) => {
   var t;
   if (e.body !== void 0)
-    return (t = e.mediaType) != null && t.includes("/json") ? JSON.stringify(e.body) : j(e.body) || V(e.body) || nt(e.body) ? e.body : JSON.stringify(e.body);
-}, Ct = async (e, t, s, r, i, n, a) => {
-  const o = new AbortController(), l = {
+    return (t = e.mediaType) != null && t.includes("/json") ? JSON.stringify(e.body) : j(e.body) || x(e.body) || nt(e.body) ? e.body : JSON.stringify(e.body);
+}, Tt = async (e, t, s, r, i, n, a) => {
+  const o = new AbortController(), c = {
     headers: n,
     body: r ?? i,
     method: t.method,
     signal: o.signal
   };
-  return e.WITH_CREDENTIALS && (l.credentials = e.CREDENTIALS), a(() => o.abort()), await fetch(s, l);
-}, Ot = (e, t) => {
+  return e.WITH_CREDENTIALS && (c.credentials = e.CREDENTIALS), a(() => o.abort()), await fetch(s, c);
+}, Ct = (e, t) => {
   if (t) {
     const s = e.headers.get(t);
     if (j(s))
@@ -164,7 +164,7 @@ const F = (e) => e != null, j = (e) => typeof e == "string", L = (e) => j(e) && 
     } catch (t) {
       console.error(t);
     }
-}, Tt = (e, t) => {
+}, Rt = (e, t) => {
   const r = {
     400: "Bad Request",
     401: "Unauthorized",
@@ -191,24 +191,24 @@ const F = (e) => e != null, j = (e) => typeof e == "string", L = (e) => j(e) && 
       `Generic Error: status: ${i}; status text: ${n}; body: ${a}`
     );
   }
-}, Rt = (e, t) => new _t(async (s, r, i) => {
+}, Ut = (e, t) => new St(async (s, r, i) => {
   try {
-    const n = $t(e, t), a = wt(t), o = vt(t), l = await At(e, t);
+    const n = wt(e, t), a = At(t), o = Ot(t), c = await vt(e, t);
     if (!i.isCancelled) {
-      const d = await Ct(e, t, n, o, a, l, i), y = await Pt(d), dt = Ot(d, t.responseHeader), X = {
+      const d = await Tt(e, t, n, o, a, c, i), f = await Pt(d), dt = Ct(d, t.responseHeader), G = {
         url: n,
         ok: d.ok,
         status: d.status,
         statusText: d.statusText,
-        body: dt ?? y
+        body: dt ?? f
       };
-      Tt(t, X), s(X.body);
+      Rt(t, G), s(G.body);
     }
   } catch (n) {
     r(n);
   }
 });
-class Ut extends Et {
+class gt extends mt {
   constructor(t) {
     super(t);
   }
@@ -219,10 +219,10 @@ class Ut extends Et {
    * @throws ApiError
    */
   request(t) {
-    return Rt(this.config, t);
+    return Ut(this.config, t);
   }
 }
-class gt {
+class Mt {
   constructor(t) {
     this.httpRequest = t;
   }
@@ -244,8 +244,8 @@ class gt {
     });
   }
 }
-class Mt {
-  constructor(t, s = Ut) {
+class Nt {
+  constructor(t, s = gt) {
     this.request = new s({
       BASE: (t == null ? void 0 : t.BASE) ?? "",
       VERSION: (t == null ? void 0 : t.VERSION) ?? "1.0",
@@ -256,7 +256,7 @@ class Mt {
       PASSWORD: t == null ? void 0 : t.PASSWORD,
       HEADERS: t == null ? void 0 : t.HEADERS,
       ENCODE_PATH: t == null ? void 0 : t.ENCODE_PATH
-    }), this.v1 = new gt(this.request);
+    }), this.v1 = new Mt(this.request);
   }
 }
 /**
@@ -264,7 +264,7 @@ class Mt {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const Nt = (e) => (t, s) => {
+const Bt = (e) => (t, s) => {
   s !== void 0 ? s.addInitializer(() => {
     customElements.define(e, t);
   }) : customElements.define(e, t);
@@ -274,7 +274,7 @@ const Nt = (e) => (t, s) => {
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const k = globalThis, J = k.ShadowRoot && (k.ShadyCSS === void 0 || k.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, at = Symbol(), et = /* @__PURE__ */ new WeakMap();
+const W = globalThis, J = W.ShadowRoot && (W.ShadyCSS === void 0 || W.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, at = Symbol(), et = /* @__PURE__ */ new WeakMap();
 let Dt = class {
   constructor(t, s, r) {
     if (this._$cssResult$ = !0, r !== at) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
@@ -293,26 +293,26 @@ let Dt = class {
     return this.cssText;
   }
 };
-const Bt = (e) => new Dt(typeof e == "string" ? e : e + "", void 0, at), jt = (e, t) => {
+const jt = (e) => new Dt(typeof e == "string" ? e : e + "", void 0, at), qt = (e, t) => {
   if (J) e.adoptedStyleSheets = t.map((s) => s instanceof CSSStyleSheet ? s : s.styleSheet);
   else for (const s of t) {
-    const r = document.createElement("style"), i = k.litNonce;
+    const r = document.createElement("style"), i = W.litNonce;
     i !== void 0 && r.setAttribute("nonce", i), r.textContent = s.cssText, e.appendChild(r);
   }
 }, st = J ? (e) => e : (e) => e instanceof CSSStyleSheet ? ((t) => {
   let s = "";
   for (const r of t.cssRules) s += r.cssText;
-  return Bt(s);
+  return jt(s);
 })(e) : e;
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const { is: qt, defineProperty: kt, getOwnPropertyDescriptor: Wt, getOwnPropertyNames: It, getOwnPropertySymbols: Ht, getPrototypeOf: Lt } = Object, A = globalThis, rt = A.trustedTypes, Kt = rt ? rt.emptyScript : "", K = A.reactiveElementPolyfillSupport, U = (e, t) => e, x = { toAttribute(e, t) {
+const { is: Wt, defineProperty: It, getOwnPropertyDescriptor: kt, getOwnPropertyNames: Ht, getOwnPropertySymbols: Kt, getPrototypeOf: Lt } = Object, A = globalThis, rt = A.trustedTypes, zt = rt ? rt.emptyScript : "", L = A.reactiveElementPolyfillSupport, M = (e, t) => e, z = { toAttribute(e, t) {
   switch (t) {
     case Boolean:
-      e = e ? Kt : null;
+      e = e ? zt : null;
       break;
     case Object:
     case Array:
@@ -337,9 +337,9 @@ const { is: qt, defineProperty: kt, getOwnPropertyDescriptor: Wt, getOwnProperty
       }
   }
   return s;
-} }, ot = (e, t) => !qt(e, t), it = { attribute: !0, type: String, converter: x, reflect: !1, useDefault: !1, hasChanged: ot };
+} }, ot = (e, t) => !Wt(e, t), it = { attribute: !0, type: String, converter: z, reflect: !1, useDefault: !1, hasChanged: ot };
 Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), A.litPropertyMetadata ?? (A.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
-class T extends HTMLElement {
+class g extends HTMLElement {
   static addInitializer(t) {
     this._$Ei(), (this.l ?? (this.l = [])).push(t);
   }
@@ -349,11 +349,11 @@ class T extends HTMLElement {
   static createProperty(t, s = it) {
     if (s.state && (s.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(t) && ((s = Object.create(s)).wrapped = !0), this.elementProperties.set(t, s), !s.noAccessor) {
       const r = Symbol(), i = this.getPropertyDescriptor(t, r, s);
-      i !== void 0 && kt(this.prototype, t, i);
+      i !== void 0 && It(this.prototype, t, i);
     }
   }
   static getPropertyDescriptor(t, s, r) {
-    const { get: i, set: n } = Wt(this.prototype, t) ?? { get() {
+    const { get: i, set: n } = kt(this.prototype, t) ?? { get() {
       return this[s];
     }, set(a) {
       this[s] = a;
@@ -367,14 +367,14 @@ class T extends HTMLElement {
     return this.elementProperties.get(t) ?? it;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(U("elementProperties"))) return;
+    if (this.hasOwnProperty(M("elementProperties"))) return;
     const t = Lt(this);
     t.finalize(), t.l !== void 0 && (this.l = [...t.l]), this.elementProperties = new Map(t.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(U("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(U("properties"))) {
-      const s = this.properties, r = [...It(s), ...Ht(s)];
+    if (this.hasOwnProperty(M("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(M("properties"))) {
+      const s = this.properties, r = [...Ht(s), ...Kt(s)];
       for (const i of r) this.createProperty(i, s[i]);
     }
     const t = this[Symbol.metadata];
@@ -423,7 +423,7 @@ class T extends HTMLElement {
   }
   createRenderRoot() {
     const t = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-    return jt(t, this.constructor.elementStyles), t;
+    return qt(t, this.constructor.elementStyles), t;
   }
   connectedCallback() {
     var t;
@@ -448,7 +448,7 @@ class T extends HTMLElement {
     var n;
     const r = this.constructor.elementProperties.get(t), i = this.constructor._$Eu(t, r);
     if (i !== void 0 && r.reflect === !0) {
-      const a = (((n = r.converter) == null ? void 0 : n.toAttribute) !== void 0 ? r.converter : x).toAttribute(s, r.type);
+      const a = (((n = r.converter) == null ? void 0 : n.toAttribute) !== void 0 ? r.converter : z).toAttribute(s, r.type);
       this._$Em = t, a == null ? this.removeAttribute(i) : this.setAttribute(i, a), this._$Em = null;
     }
   }
@@ -456,8 +456,8 @@ class T extends HTMLElement {
     var n, a;
     const r = this.constructor, i = r._$Eh.get(t);
     if (i !== void 0 && this._$Em !== i) {
-      const o = r.getPropertyOptions(i), l = typeof o.converter == "function" ? { fromAttribute: o.converter } : ((n = o.converter) == null ? void 0 : n.fromAttribute) !== void 0 ? o.converter : x;
-      this._$Em = i, this[i] = l.fromAttribute(s, o.type) ?? ((a = this._$Ej) == null ? void 0 : a.get(i)) ?? null, this._$Em = null;
+      const o = r.getPropertyOptions(i), c = typeof o.converter == "function" ? { fromAttribute: o.converter } : ((n = o.converter) == null ? void 0 : n.fromAttribute) !== void 0 ? o.converter : z;
+      this._$Em = i, this[i] = c.fromAttribute(s, o.type) ?? ((a = this._$Ej) == null ? void 0 : a.get(i)) ?? null, this._$Em = null;
     }
   }
   requestUpdate(t, s, r) {
@@ -495,8 +495,8 @@ class T extends HTMLElement {
       }
       const i = this.constructor.elementProperties;
       if (i.size > 0) for (const [n, a] of i) {
-        const { wrapped: o } = a, l = this[n];
-        o !== !0 || this._$AL.has(n) || l === void 0 || this.C(n, void 0, a, l);
+        const { wrapped: o } = a, c = this[n];
+        o !== !0 || this._$AL.has(n) || c === void 0 || this.C(n, void 0, a, c);
       }
     }
     let t = !1;
@@ -540,32 +540,36 @@ class T extends HTMLElement {
   firstUpdated(t) {
   }
 }
-T.elementStyles = [], T.shadowRootOptions = { mode: "open" }, T[U("elementProperties")] = /* @__PURE__ */ new Map(), T[U("finalized")] = /* @__PURE__ */ new Map(), K == null || K({ ReactiveElement: T }), (A.reactiveElementVersions ?? (A.reactiveElementVersions = [])).push("2.1.0");
-var xt = Object.defineProperty, zt = Object.getOwnPropertyDescriptor, ht = (e) => {
+g.elementStyles = [], g.shadowRootOptions = { mode: "open" }, g[M("elementProperties")] = /* @__PURE__ */ new Map(), g[M("finalized")] = /* @__PURE__ */ new Map(), L == null || L({ ReactiveElement: g }), (A.reactiveElementVersions ?? (A.reactiveElementVersions = [])).push("2.1.0");
+var Ft = Object.defineProperty, Vt = Object.getOwnPropertyDescriptor, ht = (e) => {
   throw TypeError(e);
-}, Ft = (e, t, s, r) => {
-  for (var i = r > 1 ? void 0 : r ? zt(t, s) : t, n = e.length - 1, a; n >= 0; n--)
+}, xt = (e, t, s, r) => {
+  for (var i = r > 1 ? void 0 : r ? Vt(t, s) : t, n = e.length - 1, a; n >= 0; n--)
     (a = e[n]) && (i = (r ? a(t, s, i) : a(i)) || i);
-  return r && i && xt(t, s, i), i;
-}, G = (e, t, s) => t.has(e) || ht("Cannot " + s), c = (e, t, s) => (G(e, t, "read from private field"), t.get(e)), f = (e, t, s) => t.has(e) ? ht("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), _ = (e, t, s, r) => (G(e, t, "write to private field"), t.set(e, s), s), O = (e, t, s) => (G(e, t, "access private method"), s), g, M, N, B, I, D, v, H, W, b, ct, lt, R;
-let z = class extends ut {
+  return r && i && Ft(t, s, i), i;
+}, X = (e, t, s) => t.has(e) || ht("Cannot " + s), l = (e, t, s) => (X(e, t, "read from private field"), t.get(e)), E = (e, t, s) => t.has(e) ? ht("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), p = (e, t, s, r) => (X(e, t, "write to private field"), t.set(e, s), s), v = (e, t, s) => (X(e, t, "access private method"), s), N, P, R, D, k, B, O, H, I, S, lt, ct, C;
+let F = class extends ut {
   constructor() {
-    super(), f(this, b), f(this, g, ""), f(this, M, ""), f(this, N, ""), f(this, B, null), f(this, I, !1), f(this, D, null), f(this, v), f(this, H), f(this, W), _(this, H, new Promise((e) => {
-      _(this, W, e);
-    })), this.consumeContext(yt, (e) => {
-      _(this, M, (e == null ? void 0 : e.getUnique()) ?? ""), O(this, b, R).call(this);
-    }), this.consumeContext(pt, (e) => {
-      this.observe(e == null ? void 0 : e.contentTypeUnique, (t) => {
-        _(this, N, t ?? ""), O(this, b, R).call(this);
+    super(), E(this, S), E(this, N, ""), E(this, P, ""), E(this, R, ""), E(this, D, null), E(this, k, !1), E(this, B, null), E(this, O), E(this, H), E(this, I), p(this, H, new Promise((e) => {
+      p(this, I, e);
+    })), this.consumeContext(pt, (e) => {
+      p(this, P, (e == null ? void 0 : e.getUnique()) ?? ""), this.observe(e == null ? void 0 : e.contentKey, (t) => {
+        p(this, R, t ?? ""), v(this, S, C).call(this);
       });
     }), this.consumeContext(ft, (e) => {
-      _(this, B, (e == null ? void 0 : e.data) ?? null), O(this, b, R).call(this);
+      p(this, P, (e == null ? void 0 : e.getUnique()) ?? ""), v(this, S, C).call(this);
+    }), this.consumeContext(yt, (e) => {
+      this.observe(e == null ? void 0 : e.contentTypeUnique, (t) => {
+        p(this, R, t ?? ""), v(this, S, C).call(this);
+      });
+    }), this.consumeContext(Et, (e) => {
+      p(this, D, (e == null ? void 0 : e.data) ?? null), v(this, S, C).call(this);
     });
   }
   connectedCallback() {
     var e;
-    super.connectedCallback(), O(this, b, ct).call(this), (e = this._manager) != null && e.propertyAlias && this.observe(this._manager.propertyAlias, (t) => {
-      _(this, g, t ?? ""), O(this, b, R).call(this);
+    super.connectedCallback(), v(this, S, lt).call(this), (e = this._manager) != null && e.propertyAlias && this.observe(this._manager.propertyAlias, (t) => {
+      p(this, N, t ?? ""), v(this, S, C).call(this);
     });
   }
   /**
@@ -575,41 +579,41 @@ let z = class extends ut {
     var n;
     const t = {
       ...e,
-      pageId: c(this, M),
-      editingAlias: c(this, g),
-      pageTypeId: c(this, N)
-    }, r = await new Mt({
+      pageId: l(this, P),
+      editingAlias: l(this, N),
+      pageTypeId: l(this, R)
+    }, r = await new Nt({
       TOKEN: Z.TOKEN,
       BASE: Z.BASE
     }).v1.postApiV1BlockfilterRemodel({
       requestBody: t
     });
-    this.data = { ...r }, _(this, D, ((n = this.data) == null ? void 0 : n.blocks.map((a) => a.contentElementTypeKey.toLowerCase())) ?? []), c(this, W).call(this);
-    const i = c(this, v);
+    this.data = { ...r }, p(this, B, ((n = this.data) == null ? void 0 : n.blocks.map((a) => a.contentElementTypeKey.toLowerCase())) ?? []), l(this, I).call(this);
+    const i = l(this, O);
     this.data.clipboardFilter = async (a) => a.values.flatMap((d) => {
-      var y;
-      return ((y = d.value) == null ? void 0 : y.contentData) || [];
+      var f;
+      return ((f = d.value) == null ? void 0 : f.contentData) || [];
     }).map((d) => {
-      var y;
-      return (y = d.contentTypeKey) == null ? void 0 : y.toLowerCase();
+      var f;
+      return (f = d.contentTypeKey) == null ? void 0 : f.toLowerCase();
     }).filter(Boolean).every((d) => {
-      var y;
-      return (y = c(this, D)) == null ? void 0 : y.includes(d);
+      var f;
+      return (f = l(this, B)) == null ? void 0 : f.includes(d);
     }) ? typeof i == "function" ? await i(a) : !0 : !1, this.connectedCallback();
   }
 };
-g = /* @__PURE__ */ new WeakMap();
-M = /* @__PURE__ */ new WeakMap();
 N = /* @__PURE__ */ new WeakMap();
-B = /* @__PURE__ */ new WeakMap();
-I = /* @__PURE__ */ new WeakMap();
+P = /* @__PURE__ */ new WeakMap();
+R = /* @__PURE__ */ new WeakMap();
 D = /* @__PURE__ */ new WeakMap();
-v = /* @__PURE__ */ new WeakMap();
+k = /* @__PURE__ */ new WeakMap();
+B = /* @__PURE__ */ new WeakMap();
+O = /* @__PURE__ */ new WeakMap();
 H = /* @__PURE__ */ new WeakMap();
-W = /* @__PURE__ */ new WeakMap();
-b = /* @__PURE__ */ new WeakSet();
-ct = function() {
-  !this.data || c(this, v) !== void 0 || (_(this, v, this.data.clipboardFilter), this.data = { ...this.data }, this.data.clipboardFilter = async (e) => (await c(this, H), e.values.flatMap((r) => {
+I = /* @__PURE__ */ new WeakMap();
+S = /* @__PURE__ */ new WeakSet();
+lt = function() {
+  !this.data || l(this, O) !== void 0 || (p(this, O, this.data.clipboardFilter), this.data = { ...this.data }, this.data.clipboardFilter = async (e) => (await l(this, H), e.values.flatMap((r) => {
     var i;
     return ((i = r.value) == null ? void 0 : i.contentData) || [];
   }).map((r) => {
@@ -617,21 +621,21 @@ ct = function() {
     return (i = r.contentTypeKey) == null ? void 0 : i.toLowerCase();
   }).filter(Boolean).every((r) => {
     var i;
-    return (i = c(this, D)) == null ? void 0 : i.includes(r);
-  }) ? typeof c(this, v) == "function" ? await c(this, v).call(this, e) : !0 : !1));
+    return (i = l(this, B)) == null ? void 0 : i.includes(r);
+  }) ? typeof l(this, O) == "function" ? await l(this, O).call(this, e) : !0 : !1));
 };
-lt = function() {
-  return !!(c(this, B) && c(this, g) && c(this, M) && c(this, N));
+ct = function() {
+  return !!(l(this, D) && l(this, N) && l(this, P) && l(this, R));
 };
-R = function() {
-  c(this, I) || !O(this, b, lt).call(this) || (_(this, I, !0), this.handleBlocks(c(this, B)));
+C = function() {
+  l(this, k) || !v(this, S, ct).call(this) || (p(this, k, !0), this.handleBlocks(l(this, D)));
 };
-z = Ft([
-  Nt("umb-block-catalogue-modal-extend")
-], z);
-const te = z;
+F = xt([
+  Bt("umb-block-catalogue-modal-extend")
+], F);
+const ee = F;
 export {
-  z as UmbBlockCatalogueModalElementExtension,
-  te as default
+  F as UmbBlockCatalogueModalElementExtension,
+  ee as default
 };
-//# sourceMappingURL=UmbBlockCatalogueModalElementExtension-KM0ORrnp.js.map
+//# sourceMappingURL=UmbBlockCatalogueModalElementExtension-BTfDPkzi.js.map
