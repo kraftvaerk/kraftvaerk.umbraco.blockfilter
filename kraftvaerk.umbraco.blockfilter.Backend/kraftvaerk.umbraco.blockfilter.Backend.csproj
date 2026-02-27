@@ -19,12 +19,6 @@
 	<PackageTags>umbraco;plugin;package;umbraco-marketplace;kraftvaerk;blocks;</PackageTags>
 	<Description>An Umbraco package that lets you filter available blocks dynamically based on user, page, or any custom logic.</Description>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Constants\" />
-    <Folder Include="Helpers\" />
-    <Folder Include="Options\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <PackageReference Include="Umbraco.Cms" Version="[16.0.0, 17.0.0)" />
   </ItemGroup>
