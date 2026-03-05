@@ -5,13 +5,12 @@ import { customElement } from "lit/decorators.js";
 import { UMB_MODAL_CONTEXT } from "@umbraco-cms/backoffice/modal";
 import { BlockfilterClient, OpenAPI } from "../blockfilter-api";
 
-
 @customElement('umb-block-catalogue-modal-extend')
 export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueModalElement {
 
   #alias = '';
-  #unique = '';
-  #pageType = '';
+  static pageId = '';
+  static pageTypeId = '';
   #modalData: unknown | null = null;
   #handled = false;
 
@@ -31,22 +30,18 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
       this.#keysReadyResolve = resolve;
     });
 
-    this.consumeContext(UMB_BLOCK_WORKSPACE_CONTEXT, (workspaceContext) => {
-      this.#unique = workspaceContext?.getUnique() ?? '';
-      this.observe(workspaceContext?.contentKey, (value) => {
-        this.#pageType = value ?? '';
-        this.#tryHandle();
-      });
-    });
-
-    this.consumeContext(UMB_VARIANT_WORKSPACE_CONTEXT, (workspaceContext) => {
-      this.#unique = workspaceContext?.getUnique() ?? '';
+    this.consumeContext(UMB_BLOCK_WORKSPACE_CONTEXT, () => {
       this.#tryHandle();
     });
 
-    this.consumeContext(UMB_DOCUMENT_WORKSPACE_CONTEXT, (workspaceContext) => {
-      this.observe(workspaceContext?.contentTypeUnique, (value) => {
-        this.#pageType = value ?? '';
+    this.consumeContext(UMB_VARIANT_WORKSPACE_CONTEXT, (variantWorkspaceContext) => {
+      UmbBlockCatalogueModalElementExtension.pageId = variantWorkspaceContext?.getUnique() ?? '';
+      this.#tryHandle();
+    });
+
+    this.consumeContext(UMB_DOCUMENT_WORKSPACE_CONTEXT, (documentWorkspaceContext) => {
+      this.observe(documentWorkspaceContext?.contentTypeUnique, (value) => {
+        UmbBlockCatalogueModalElementExtension.pageTypeId = value ?? '';
         this.#tryHandle();
       });
     });
@@ -105,7 +100,7 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
   }
 
   #ready(): boolean {
-    return !!(this.#modalData && this.#alias && this.#unique && this.#pageType);
+    return !!(this.#modalData && this.#alias && UmbBlockCatalogueModalElementExtension.pageId && UmbBlockCatalogueModalElementExtension.pageTypeId);
   }
 
   #tryHandle() {
@@ -120,9 +115,9 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
   async handleBlocks(data: any) {
     const requestObject = {
       ...(data as any),
-      pageId: this.#unique,
+      pageId: UmbBlockCatalogueModalElementExtension.pageId,
       editingAlias: this.#alias,
-      pageTypeId: this.#pageType
+      pageTypeId: UmbBlockCatalogueModalElementExtension.pageTypeId
     };
 
     const bfc = new BlockfilterClient({
