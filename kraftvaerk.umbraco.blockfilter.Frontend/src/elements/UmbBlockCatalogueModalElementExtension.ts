@@ -37,14 +37,14 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
     this.consumeContext(UMB_VARIANT_WORKSPACE_CONTEXT, (variantWorkspaceContext) => {
       UmbBlockCatalogueModalElementExtension.pageId = variantWorkspaceContext?.getUnique() ?? '';
       this.#tryHandle();
-    });
+    }).passContextAliasMatches();
 
     this.consumeContext(UMB_DOCUMENT_WORKSPACE_CONTEXT, (documentWorkspaceContext) => {
       this.observe(documentWorkspaceContext?.contentTypeUnique, (value) => {
         UmbBlockCatalogueModalElementExtension.pageTypeId = value ?? '';
         this.#tryHandle();
       });
-    });
+    }).passContextAliasMatches();
 
     this.consumeContext(UMB_MODAL_CONTEXT, (modalContext) => {
       this.#modalData = modalContext?.data ?? null;
