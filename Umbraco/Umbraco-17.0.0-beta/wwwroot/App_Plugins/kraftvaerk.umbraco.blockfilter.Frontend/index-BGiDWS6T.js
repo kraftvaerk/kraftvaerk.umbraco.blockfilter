@@ -17,7 +17,7 @@ const s = {
     alias: l,
     name: "Block Catalogue Modal Extension",
     elementName: "umb-block-catalogue-modal-extend",
-    js: () => import("./UmbBlockCatalogueModalElementExtension-D610cufA.js"),
+    js: () => import("./UmbBlockCatalogueModalElementExtension-BTTE375t.js"),
     // Make sure we win registration ordering if both exist:
     weight: -1e4
   }
@@ -37,4 +37,4 @@ export {
   s as O,
   A as o
 };
-//# sourceMappingURL=index-oyZYYFSB.js.map
+//# sourceMappingURL=index-BGiDWS6T.js.map
