@@ -7,8 +7,9 @@ export type Block = {
     contentElementTypeKey: string;
     allowAtRoot: boolean;
     allowInAreas: boolean;
-    groupKey: string;
+    groupKey?: string | null;
     areas?: Array<Area> | null;
     areaGridColumns?: number | null;
+    thumbnail?: string | null;
 };
 

@@ -6,9 +6,15 @@
     <RootNamespace>Umbraco_17._0._0_beta</RootNamespace>
     <CompressionEnabled>false</CompressionEnabled> <!-- Disable compression. E.g. for umbraco backoffice files. These files should be precompressed by node and not let dotnet handle it -->
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="appsettings-schema.blockfilter.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="appsettings-schema.blockfilter.json" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms" Version="17.1.0" />
+    <PackageReference Include="Umbraco.Cms" Version="17.3.4" />
     <PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.1.0" />
     <PackageReference Include="uSync" Version="17.0.2" />
   </ItemGroup>

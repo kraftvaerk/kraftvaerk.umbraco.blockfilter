@@ -69,6 +69,48 @@ public class YourComposer : IComposer
 
 ---
 
+## ⚙️ Built-in Block Filter Configurator
+
+For teams that don't want to write code, Block Filter ships with an optional **configurator UI** that adds a "BlockFilter" tab to document type workspaces in the backoffice.
+
+The configurator lets you define filtering rules per Block List / Block Grid property with three modes:
+
+- **None** – No filtering. All blocks are available (default).
+- **Simple** – Pick which blocks are enabled via checkboxes.
+- **Complex** – Define weighted allow/deny rules per block and user group. Higher weight takes precedence.
+
+Configuration is persisted to disk as JSON using **aliases** (not GUIDs), so rules carry across dev/test/prod environments.
+
+### Enabling the configurator
+
+Add this to your `appsettings.json`:
+
+```json
+{
+  "BlockFilter": {
+    "EnableSettingsTab": true
+  }
+}
+```
+
+When enabled, this registers:
+1. The **BlockFilter tab** on document type workspaces in the backoffice.
+2. A built-in **notification handler** that reads saved rules and filters blocks automatically.
+
+> **Note:** The built-in handler and the custom handler approach are **not mutually exclusive**. You can enable the configurator *and* register your own `RemodelBlockCatalogueNotification` handlers for additional logic. All handlers run in sequence.
+
+### How it works
+
+The configurator saves rules per document type to `/blockfilter/{documentTypeAlias}.json` in your site root. When a Block Catalogue modal opens, the built-in handler reads the relevant config file and filters blocks based on the saved rules.
+
+For **complex** rules, the handler:
+1. Finds all rules matching the block alias and the current user's group memberships (or "Everyone").
+2. Picks the rule with the highest weight.
+3. Allows or denies the block based on that rule's type.
+4. If no rules match a block, it is allowed by default.
+
+---
+
 ## 📦 License & Contributing
 
 This package is open source and licensed under the [MIT License](https://opensource.org/licenses/MIT).

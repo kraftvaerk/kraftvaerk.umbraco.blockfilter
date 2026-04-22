@@ -4,7 +4,8 @@ import { ManifestBase, UmbConditionConfigBase, UmbEntryPointOnInit, UmbExtension
 
 import { UMB_AUTH_CONTEXT } from '@umbraco-cms/backoffice/auth';
 import { ManifestModal } from '@umbraco-cms/backoffice/modal';
-import { OpenAPI } from './blockfilter-api/index.ts';
+import { ManifestWorkspaceView } from '@umbraco-cms/backoffice/workspace';
+import { OpenAPI, BlockfilterClient } from './blockfilter-api/index.ts';
 
 const modalAlias = 'Umb.Modal.BlockCatalogue';
 const manifests: ManifestModal[] = [
@@ -23,6 +24,25 @@ const manifests: ManifestModal[] = [
   },
 ];
 
+const settingsTabManifest: ManifestWorkspaceView = {
+  type: 'workspaceView',
+  alias: 'Kraftvaerk.Blockfilter.WorkspaceView.SettingsTab',
+  name: 'BlockFilter Settings Tab',
+  element: () => import('./elements/BlockFilterSettingsTabView.ts'),
+  weight: 100,
+  meta: {
+    label: 'BlockFilter',
+    pathname: 'blockfilter',
+    icon: 'icon-filter',
+  },
+  conditions: [
+    {
+      alias: 'Umb.Condition.WorkspaceAlias',
+      match: 'Umb.Workspace.DocumentType',
+    },
+  ],
+};
+
 export const onInit: UmbEntryPointOnInit = async (_host, extensionRegistry) => {
   _host.consumeContext(UMB_AUTH_CONTEXT, async (authContext) => {
     const token = await authContext?.getLatestToken() ?? '';
@@ -30,6 +50,16 @@ export const onInit: UmbEntryPointOnInit = async (_host, extensionRegistry) => {
 
     OpenAPI.BASE = base;
     OpenAPI.TOKEN = token;
+
+    try {
+      const client = new BlockfilterClient({ TOKEN: token, BASE: base });
+      const settings = await client.v1.getApiV1BlockfilterSettings();
+      if (settings.enableSettingsTab === true) {
+        extensionRegistry.register(settingsTabManifest);
+      }
+    } catch {
+      // Settings fetch failed – proceed without the settings tab
+    }
     
     // Umbraco doesn't provide a "overwrites" for modals
     // lets overwrite it anyway

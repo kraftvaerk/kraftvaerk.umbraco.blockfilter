@@ -29,7 +29,7 @@
     <None Include="ui\**" Pack="true" PackagePath="content\ui" />
     <None Include="buildTransitive\**" Pack="true" PackagePath="buildTransitive" />
 	  <!-- Include the schema file in the root of the package -->
-	  <None Include="appsettings-schema.headlessBlockPreview.json" Pack="true" PackagePath="\" />
+	  <None Include="appsettings-schema.blockfilter.json" Pack="true" PackagePath="\" />
 	  <None Include="Images\logo.png" Pack="true" PackagePath="" />
 	  <None Include="..\README.md">
 		  <Pack>True</Pack>
