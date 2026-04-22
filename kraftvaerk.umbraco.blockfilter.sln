@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco-16.2.0-nuget", "Umb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco-17.0.0-beta", "Umbraco\Umbraco-17.0.0-beta\Umbraco-17.0.0-beta.csproj", "{AD3A98B1-8A26-4F01-8C00-9793513C53F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco-17.3.4-nuget", "Umbraco\Umbraco-17.3.4-nuget\Umbraco-17.3.4-nuget.csproj", "{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{AD3A98B1-8A26-4F01-8C00-9793513C53F6}.Release|x64.Build.0 = Release|Any CPU
 		{AD3A98B1-8A26-4F01-8C00-9793513C53F6}.Release|x86.ActiveCfg = Release|Any CPU
 		{AD3A98B1-8A26-4F01-8C00-9793513C53F6}.Release|x86.Build.0 = Release|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Release|x64.Build.0 = Release|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +105,7 @@ Global
 		{87D0E670-9190-4129-9D1C-E386E35C0473} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
 		{23CD2351-9A69-4170-A6F4-61781A419838} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
 		{AD3A98B1-8A26-4F01-8C00-9793513C53F6} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
+		{2BC9ED9E-A48C-4B64-B306-899229A5C7C7} = {5CFD1E54-92AE-4461-AB21-6045BB739A48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7EF47476-2DE6-4B08-B6B2-EE0B869985AB}

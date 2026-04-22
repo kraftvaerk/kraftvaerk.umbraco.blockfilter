@@ -4,7 +4,7 @@
 
 	</PropertyGroup>
 
-	<Target Name="CopyPackageReferenceProjectAssets" BeforeTargets="Build">
+	<Target Name="CopyPackageReferenceProjectAssets" BeforeTargets="ResolveStaticWebAssetsInputs">
 		<ItemGroup>
 			<PackageReferenceProjectContentFiles Include="$(PackageReferenceProjectContentFilesPath)" />
 		</ItemGroup>

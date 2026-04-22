@@ -20,7 +20,7 @@ const manifests: ManifestModal[] = [
     js: () => import('./elements/UmbBlockCatalogueModalElementExtension.ts'),
     // Make sure we win registration ordering if both exist:
     weight: -10000,
-    
+
   },
 ];
 
@@ -44,36 +44,48 @@ const settingsTabManifest: ManifestWorkspaceView = {
 };
 
 export const onInit: UmbEntryPointOnInit = async (_host, extensionRegistry) => {
-  _host.consumeContext(UMB_AUTH_CONTEXT, async (authContext) => {
-    const token = await authContext?.getLatestToken() ?? '';
-    const base = authContext?.getServerUrl() ?? '';
+  _host.consumeContext(UMB_AUTH_CONTEXT, (authContext) => {
+    if (!authContext) return;
 
+    const base = authContext.getServerUrl() ?? '';
     OpenAPI.BASE = base;
-    OpenAPI.TOKEN = token;
+    // Use a factory so every request gets a fresh token rather than the one
+    // captured at startup (which may expire during long editing sessions).
+    OpenAPI.TOKEN = async () => (await authContext.getLatestToken()) ?? '';
 
-    try {
-      const client = new BlockfilterClient({ TOKEN: token, BASE: base });
-      const settings = await client.v1.getApiV1BlockfilterSettings();
-      if (settings.enableSettingsTab === true) {
-        extensionRegistry.register(settingsTabManifest);
+    (async () => {
+      try {
+        const client = new BlockfilterClient({ TOKEN: OpenAPI.TOKEN, BASE: base });
+        const settings = await client.v1.getApiV1BlockfilterSettings();
+        if (settings.enableSettingsTab === true) {
+          extensionRegistry.register(settingsTabManifest);
+        }
+      } catch {
+        // Settings fetch failed – proceed without the settings tab
       }
-    } catch {
-      // Settings fetch failed – proceed without the settings tab
-    }
-    
-    // Umbraco doesn't provide a "overwrites" for modals
-    // lets overwrite it anyway
-    removeAndRegister(extensionRegistry);
+
+      // Umbraco doesn't provide a "overwrites" mechanism for modals, so we poll
+      // until the core extension appears, then replace it with ours.
+      removeAndRegister(extensionRegistry, 0);
+    })();
   });
 };
 
-  
-function removeAndRegister(extensionRegistry : UmbExtensionRegistry<ManifestBase, UmbConditionConfigBase<string>, ManifestBase>) {
+const MAX_POLL_ATTEMPTS = 30; // 30 × 200 ms = 6 seconds max wait
+
+function removeAndRegister(extensionRegistry : UmbExtensionRegistry<ManifestBase, UmbConditionConfigBase<string>, ManifestBase>, attempts: number) {
+  if (attempts >= MAX_POLL_ATTEMPTS) {
+    console.error(
+      `BlockFilter: '${modalAlias}' was not found in the extension registry after ${MAX_POLL_ATTEMPTS} attempts. The block catalogue override will not be applied.`,
+    );
+    return;
+  }
+
   setTimeout(() => {
     const blockCatalogueExtension = extensionRegistry.getByAlias(modalAlias);
 
     if(!blockCatalogueExtension) {
-      removeAndRegister(extensionRegistry);
+      removeAndRegister(extensionRegistry, attempts + 1);
     }
     else {
       extensionRegistry.unregister(blockCatalogueExtension.alias);

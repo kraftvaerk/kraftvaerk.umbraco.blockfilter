@@ -1,15 +1,23 @@
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import { LitElement, html, css, customElement, state, nothing } from '@umbraco-cms/backoffice/external/lit';
+import { LitElement, html, css, customElement, state } from '@umbraco-cms/backoffice/external/lit';
 import { UMB_DOCUMENT_TYPE_WORKSPACE_CONTEXT, UmbDocumentTypeItemRepository } from '@umbraco-cms/backoffice/document-type';
 import { UmbDataTypeItemRepository, UmbDataTypeDetailRepository } from '@umbraco-cms/backoffice/data-type';
 import type { UmbDataTypeItemModel, UmbDataTypeDetailModel } from '@umbraco-cms/backoffice/data-type';
 import { UmbUserGroupCollectionRepository } from '@umbraco-cms/backoffice/user-group';
+import { UMB_NOTIFICATION_CONTEXT } from '@umbraco-cms/backoffice/notification';
+import type { UmbNotificationContext } from '@umbraco-cms/backoffice/notification';
+import type { UmbPropertyTypeModel } from '@umbraco-cms/backoffice/content-type';
 import { BlockfilterClient, OpenAPI } from '../blockfilter-api';
 
 const BLOCK_EDITOR_UI_ALIASES: ReadonlySet<string> = new Set([
     'Umb.PropertyEditorUi.BlockList',
     'Umb.PropertyEditorUi.BlockGrid',
 ]);
+
+// Arbitrary cap: no real Umbraco install has anywhere near this many user groups.
+// Pagination is not implemented because UmbUserGroupCollectionRepository does not
+// expose a reliable total-count API for incremental fetching here.
+const USER_GROUP_FETCH_LIMIT = 1000;
 
 interface BlockConfig {
     contentElementTypeKey: string;
@@ -64,6 +72,8 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
     readonly #docTypeItemRepository = new UmbDocumentTypeItemRepository(this);
     readonly #userGroupRepository = new UmbUserGroupCollectionRepository(this);
 
+    #notificationContext?: UmbNotificationContext;
+
     @state()
     private _blockProperties: BlockPropertyEntry[] = [];
 
@@ -83,118 +93,136 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
     @state()
     private _configs: Map<string, PropertyConfig> = new Map();
 
-    constructor() {
-        super();
-        this.#loadUserGroups();
+    override connectedCallback() {
+        super.connectedCallback();
+
+        this.#loadUserGroups().catch((err) =>
+            console.error('BlockFilter: failed to load user groups', err),
+        );
+
+        this.consumeContext(UMB_NOTIFICATION_CONTEXT, (ctx) => {
+            if (!ctx) return;
+            this.#notificationContext = ctx;
+        });
 
         this.consumeContext(UMB_DOCUMENT_TYPE_WORKSPACE_CONTEXT, (context) => {
+            if (!context) return;
+
             this._documentTypeKey = context.getUnique() ?? undefined;
 
-            this.observe(context.structure.contentTypeProperties, async (properties) => {
+            this.observe(context.structure.contentTypeProperties, (properties) => {
                 this._loading = true;
-
-                if (!properties?.length) {
-                    this._blockProperties = [];
+                this.#handlePropertiesChange(properties).catch((err) => {
+                    console.error('BlockFilter: failed to load block properties', err);
                     this._loading = false;
-                    return;
-                }
-
-                const uniqueDataTypeIds = [...new Set(properties.map((p) => p.dataType.unique))];
-                const { data: itemModels } = await this.#itemRepository.requestItems(uniqueDataTypeIds);
-
-                if (!itemModels) {
-                    this._blockProperties = [];
-                    this._loading = false;
-                    return;
-                }
-
-                const blockItemMap = new Map<string, UmbDataTypeItemModel>(
-                    itemModels
-                        .filter((dt) => BLOCK_EDITOR_UI_ALIASES.has(dt.propertyEditorUiAlias))
-                        .map((dt) => [dt.unique, dt]),
-                );
-
-                const blockProperties = properties.filter((p) => blockItemMap.has(p.dataType.unique));
-
-                const uniqueBlockDataTypeIds = [...new Set(blockProperties.map((p) => p.dataType.unique))];
-                const detailResults = await Promise.all(
-                    uniqueBlockDataTypeIds.map(async (id) => {
-                        const result = await this.#detailRepository.requestByUnique(id);
-                        return { id, detail: result.data as UmbDataTypeDetailModel | undefined };
-                    }),
-                );
-                const detailMap = new Map<string, UmbDataTypeDetailModel | undefined>(
-                    detailResults.map(({ id, detail }) => [id, detail]),
-                );
-
-                const allBlockKeys = new Set<string>();
-                for (const detail of detailMap.values()) {
-                    if (!detail) continue;
-                    const blocksValue = detail.values.find((v) => v.alias === 'blocks');
-                    const blocks = blocksValue?.value as BlockConfig[] | undefined;
-                    if (blocks) {
-                        for (const b of blocks) {
-                            if (b.contentElementTypeKey) allBlockKeys.add(b.contentElementTypeKey);
-                        }
-                    }
-                }
-
-                const blockInfoMap = new Map<string, { name: string; icon: string }>();
-                if (allBlockKeys.size > 0) {
-                    const { data: docTypeItems } = await this.#docTypeItemRepository.requestItems([...allBlockKeys]);
-                    if (docTypeItems) {
-                        for (const item of docTypeItems) {
-                            const rawIcon = item.icon || 'icon-document';
-                            blockInfoMap.set(item.unique, { name: item.name, icon: rawIcon.split(' ')[0] });
-                        }
-                    }
-                }
-
-                const newProps: BlockPropertyEntry[] = blockProperties.map((p) => {
-                    const detail = detailMap.get(p.dataType.unique);
-                    const blocksValue = detail?.values.find((v) => v.alias === 'blocks');
-                    const blocks = (blocksValue?.value as BlockConfig[] | undefined) ?? [];
-
-                    return {
-                        name: p.name,
-                        alias: p.alias,
-                        editorUiAlias: blockItemMap.get(p.dataType.unique)!.propertyEditorUiAlias,
-                        dataType: blockItemMap.get(p.dataType.unique)!,
-                        availableBlocks: blocks
-                            .filter((b) => b.contentElementTypeKey)
-                            .map((b) => {
-                                const info = blockInfoMap.get(b.contentElementTypeKey);
-                                return {
-                                    key: b.contentElementTypeKey,
-                                    name: info?.name ?? b.contentElementTypeKey,
-                                    icon: info?.icon || 'icon-document',
-                                };
-                            }),
-                    };
                 });
-
-                // Initialise config state for new properties (preserve existing)
-                const updatedConfigs = new Map(this._configs);
-                for (const prop of newProps) {
-                    if (!updatedConfigs.has(prop.alias)) {
-                        updatedConfigs.set(prop.alias, {
-                            mode: 'none',
-                            enabledBlocks: new Set(prop.availableBlocks.map((b) => b.key)),
-                            rules: [],
-                        });
-                    }
-                }
-                this._configs = updatedConfigs;
-                this._blockProperties = newProps;
-
-                // Load saved configuration from server
-                if (this._documentTypeKey) {
-                    await this.#loadSavedConfig(newProps);
-                }
-
-                this._loading = false;
             });
         });
+    }
+
+    async #handlePropertiesChange(properties: UmbPropertyTypeModel[]) {
+        if (!properties?.length) {
+            this._blockProperties = [];
+            this._loading = false;
+            return;
+        }
+
+        const props = properties;
+
+        const uniqueDataTypeIds = [...new Set(props.map((p) => p.dataType.unique))];
+        const { data: itemModels } = await this.#itemRepository.requestItems(uniqueDataTypeIds);
+
+        if (!itemModels) {
+            this._blockProperties = [];
+            this._loading = false;
+            return;
+        }
+
+        const blockItemMap = new Map<string, UmbDataTypeItemModel>(
+            itemModels
+                .filter((dt) => BLOCK_EDITOR_UI_ALIASES.has(dt.propertyEditorUiAlias))
+                .map((dt) => [dt.unique, dt]),
+        );
+
+        const blockProperties = props.filter((p) => blockItemMap.has(p.dataType.unique));
+
+        const uniqueBlockDataTypeIds = [...new Set(blockProperties.map((p) => p.dataType.unique))];
+        const detailResults = await Promise.all(
+            uniqueBlockDataTypeIds.map(async (id) => {
+                const result = await this.#detailRepository.requestByUnique(id);
+                return { id, detail: result.data as UmbDataTypeDetailModel | undefined };
+            }),
+        );
+        const detailMap = new Map<string, UmbDataTypeDetailModel | undefined>(
+            detailResults.map(({ id, detail }) => [id, detail]),
+        );
+
+        const allBlockKeys = new Set<string>();
+        for (const detail of detailMap.values()) {
+            if (!detail) continue;
+            const blocksValue = detail.values.find((v) => v.alias === 'blocks');
+            const blocks = blocksValue?.value as BlockConfig[] | undefined;
+            if (blocks) {
+                for (const b of blocks) {
+                    if (b.contentElementTypeKey) allBlockKeys.add(b.contentElementTypeKey);
+                }
+            }
+        }
+
+        const blockInfoMap = new Map<string, { name: string; icon: string }>();
+        if (allBlockKeys.size > 0) {
+            const { data: docTypeItems } = await this.#docTypeItemRepository.requestItems([...allBlockKeys]);
+            if (docTypeItems) {
+                for (const item of docTypeItems) {
+                    const rawIcon = item.icon || 'icon-document';
+                    blockInfoMap.set(item.unique, { name: item.name ?? item.unique, icon: rawIcon.split(' ')[0] });
+                }
+            }
+        }
+
+        const newProps: BlockPropertyEntry[] = blockProperties.map((p) => {
+            const detail = detailMap.get(p.dataType.unique);
+            const blocksValue = detail?.values.find((v) => v.alias === 'blocks');
+            const blocks = (blocksValue?.value as BlockConfig[] | undefined) ?? [];
+            const dtItem = blockItemMap.get(p.dataType.unique)!;
+
+            return {
+                name: p.name,
+                alias: p.alias,
+                editorUiAlias: dtItem.propertyEditorUiAlias,
+                dataType: dtItem,
+                availableBlocks: blocks
+                    .filter((b) => b.contentElementTypeKey)
+                    .map((b) => {
+                        const info = blockInfoMap.get(b.contentElementTypeKey);
+                        return {
+                            key: b.contentElementTypeKey,
+                            name: info?.name ?? b.contentElementTypeKey,
+                            icon: info?.icon || 'icon-document',
+                        };
+                    }),
+            };
+        });
+
+        // Initialise config state for new properties (preserve existing)
+        const updatedConfigs = new Map(this._configs);
+        for (const prop of newProps) {
+            if (!updatedConfigs.has(prop.alias)) {
+                updatedConfigs.set(prop.alias, {
+                    mode: 'none',
+                    enabledBlocks: new Set(prop.availableBlocks.map((b) => b.key)),
+                    rules: [],
+                });
+            }
+        }
+        this._configs = updatedConfigs;
+        this._blockProperties = newProps;
+
+        if (this._documentTypeKey) {
+            await this.#loadSavedConfig(newProps);
+        }
+
+        this._loading = false;
     }
 
     async #loadSavedConfig(props: BlockPropertyEntry[]) {
@@ -226,14 +254,17 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
 
             this._configs = updatedConfigs;
         } catch {
-            // empty array returned when no config exists
+            // empty array returned when no config exists — not an error
         }
     }
 
     async #loadUserGroups() {
-        const { data } = await this.#userGroupRepository.requestCollection({ skip: 0, take: 1000 });
+        const { data } = await this.#userGroupRepository.requestCollection({
+            skip: 0,
+            take: USER_GROUP_FETCH_LIMIT,
+        });
         if (data?.items) {
-            this._userGroups = data.items.map((g) => ({ name: g.name, unique: g.unique }));
+            this._userGroups = data.items.map((g) => ({ name: g.name ?? g.unique, unique: g.unique }));
         }
     }
 
@@ -249,15 +280,10 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
 
     #setMode(alias: string, mode: ConfigMode) {
         const cfg = this.#getConfig(alias);
-        const prop = this._blockProperties.find((p) => p.alias === alias)!;
         const updated = new Map(this._configs);
-        updated.set(alias, {
-            ...cfg,
-            mode,
-            // Reset to defaults when switching
-            enabledBlocks: new Set(prop.availableBlocks.map((b) => b.key)),
-            rules: [],
-        });
+        // Preserve existing enabledBlocks and rules — don't reset on mode switch.
+        // Users can freely toggle modes without losing their configuration.
+        updated.set(alias, { ...cfg, mode });
         this._configs = updated;
     }
 
@@ -321,7 +347,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
             };
             if (cfg.mode === 'simple') {
                 base.simple = { enabledBlockKeys: [...cfg.enabledBlocks] };
-            } else {
+            } else if (cfg.mode === 'complex') {
                 base.complex = {
                     rules: cfg.rules.map((r) => ({
                         type: r.type,
@@ -346,8 +372,17 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                 documentTypeKey: this._documentTypeKey,
                 requestBody: this.getConfigJson(),
             });
+            this.#notificationContext?.peek('positive', {
+                data: { message: 'Block filter configuration saved.' },
+            });
         } catch (err) {
             console.error('Failed to save block filter configuration', err);
+            this.#notificationContext?.peek('danger', {
+                data: {
+                    headline: 'Block Filter',
+                    message: 'Failed to save configuration. Please try again.',
+                },
+            });
         } finally {
             this._saving = false;
         }
@@ -377,10 +412,6 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                     @click=${() => this.#saveConfig()}
                 >${this._saving ? 'Saving...' : 'Save configuration'}</uui-button>
             </div>
-
-            <uui-box headline="Generated configuration">
-                <pre>${JSON.stringify(this.getConfigJson(), null, 2)}</pre>
-            </uui-box>
         `;
     }
 
@@ -612,20 +643,11 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                 margin: 0 0 var(--uui-size-space-3) 0;
             }
 
-            /* ── JSON preview ── */
+            /* ── Actions ── */
             .actions {
                 margin-bottom: var(--uui-size-space-4);
                 display: flex;
                 justify-content: flex-end;
-            }
-            pre {
-                background: var(--uui-color-surface-alt);
-                padding: var(--uui-size-space-4);
-                border-radius: var(--uui-border-radius);
-                overflow: auto;
-                font-size: 12px;
-                line-height: 1.5;
-                margin: 0;
             }
         `,
     ];

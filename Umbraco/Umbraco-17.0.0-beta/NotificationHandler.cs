@@ -20,6 +20,7 @@ public class NotificationHandler : INotificationAsyncHandler<RemodelBlockCatalog
     /// <returns></returns>
     public async Task HandleAsync(RemodelBlockCatalogueNotification notification, CancellationToken cancellationToken)
     {
+        return;
         // these are only allowed if the user is an admin
         var adminAliases = new List<string>() { "secretBlock", "secretThreeColumns" };
 

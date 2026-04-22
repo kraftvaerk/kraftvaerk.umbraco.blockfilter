@@ -34,7 +34,7 @@ namespace kraftvaerk.umbraco.blockfilter.Backend.Controllers;
 [JsonOptionsName(Constants.JsonOptionsNames.BackOffice)]
 [Route($"api/v1/{BlockFilterConstants.ApiName}")]
 [Produces("application/json")]
-public class BlockFilterController : Controller
+public class BlockFilterController : ControllerBase
 {
     private readonly ICoreScopeProvider _coreScopeProvider;
     private readonly IBackOfficeSecurityAccessor _backOfficeSecurityAccessor;
@@ -59,7 +59,7 @@ public class BlockFilterController : Controller
         _userGroupService = userGroupService ?? throw new ArgumentNullException(nameof(userGroupService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _options = options ?? throw new ArgumentNullException(nameof(options));
-        _storageRoot = Path.Combine(webHostEnvironment.ContentRootPath, "blockfilter");
+        _storageRoot = Path.Combine(webHostEnvironment.ContentRootPath, options.Value.StoragePath);
     }
 
     [HttpGet("settings")]
@@ -233,11 +233,21 @@ public class BlockFilterController : Controller
     [Consumes("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SaveConfiguration(string documentTypeKey, [FromBody] List<BlockFilterApiConfigModel> requestBody)
+    public async Task<IActionResult> SaveConfiguration(string documentTypeKey, [FromBody] List<BlockFilterApiConfigModel>? requestBody)
     {
         if (!IsValidKey(documentTypeKey))
         {
             return BadRequest("Invalid document type key.");
+        }
+
+        if (requestBody is null)
+        {
+            return BadRequest("Request body is required.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
         }
 
         var docTypeAlias = ResolveContentTypeAlias(documentTypeKey);

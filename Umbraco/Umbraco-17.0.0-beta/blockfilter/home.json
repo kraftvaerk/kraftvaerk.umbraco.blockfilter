@@ -9,5 +9,32 @@
       ]
     },
     "complex": null
+  },
+  {
+    "propertyAlias": "blockContent",
+    "mode": "complex",
+    "simple": null,
+    "complex": {
+      "rules": [
+        {
+          "type": "allow",
+          "block": "codeBlock",
+          "userGroup": "everyone",
+          "weight": 0
+        },
+        {
+          "type": "allow",
+          "block": "rteBlock",
+          "userGroup": "admin",
+          "weight": 0
+        },
+        {
+          "type": "deny",
+          "block": "secretBlock",
+          "userGroup": "everyone",
+          "weight": 0
+        }
+      ]
+    }
   }
 ]

@@ -1,8 +1,10 @@
 using System.Text.Json;
 using kraftvaerk.umbraco.blockfilter.Backend.Models;
 using kraftvaerk.umbraco.blockfilter.Backend.Notifications;
+using kraftvaerk.umbraco.blockfilter.Backend.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Events;
 
 namespace kraftvaerk.umbraco.blockfilter.Backend.Handlers;
@@ -14,9 +16,10 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
 
     public BlockFilterNotificationHandler(
         IWebHostEnvironment webHostEnvironment,
-        ILogger<BlockFilterNotificationHandler> logger)
+        ILogger<BlockFilterNotificationHandler> logger,
+        IOptions<BlockFilterOptions> options)
     {
-        _storageRoot = Path.Combine(webHostEnvironment.ContentRootPath, "blockfilter");
+        _storageRoot = Path.Combine(webHostEnvironment.ContentRootPath, options.Value.StoragePath);
         _logger = logger;
     }
 
@@ -49,17 +52,17 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
         var propertyConfig = configs.FirstOrDefault(c =>
             string.Equals(c.PropertyAlias, model.EditorAlias, StringComparison.OrdinalIgnoreCase));
 
-        if (propertyConfig is null || propertyConfig.Mode == "none")
+        if (propertyConfig is null || string.Equals(propertyConfig.Mode, "none", StringComparison.OrdinalIgnoreCase))
             return;
 
-        if (propertyConfig.Mode == "simple" && propertyConfig.Simple is not null)
+        if (string.Equals(propertyConfig.Mode, "simple", StringComparison.OrdinalIgnoreCase) && propertyConfig.Simple is not null)
         {
             var enabled = new HashSet<string>(propertyConfig.Simple.EnabledBlocks, StringComparer.OrdinalIgnoreCase);
             model.Blocks = model.Blocks
-                .Where(b => b.Alias is null || enabled.Contains(b.Alias))
+                .Where(b => b.Alias is not null && enabled.Contains(b.Alias))
                 .ToList();
         }
-        else if (propertyConfig.Mode == "complex" && propertyConfig.Complex is not null)
+        else if (string.Equals(propertyConfig.Mode, "complex", StringComparison.OrdinalIgnoreCase) && propertyConfig.Complex is not null)
         {
             var userGroupAliases = model.User?.Groups
                 .Select(g => g.Alias)
