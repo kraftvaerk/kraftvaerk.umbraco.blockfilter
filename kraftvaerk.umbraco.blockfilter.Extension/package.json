@@ -1,0 +1,25 @@
+{
+  "name": "kraftvaerk.umbraco.blockfilter.extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite build --watch",
+    "skills:copilot": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a github-copilot",
+    "skills:cursor": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a cursor",
+    "skills:windsurf": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a windsurf",
+    "skills:claude": "npx skills add umbraco/Umbraco-CMS-Backoffice-Skills --skill * -a claude"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lit": "^3.1.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.2.0",
+    "@umbraco-cms/backoffice": "^17.0.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1"
+  }
+}

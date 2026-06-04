@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem \"x:\\\\kasparboelkjeldsen\\\\hydra\" -Recurse -Depth 2)",
+      "Bash(Select-Object FullName, Name)",
+      "Bash(Format-List)",
+      "PowerShell(Get-ChildItem \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\" -Depth 1 -Name | Where-Object { $_ -notmatch '^\\(Umbraco|node_modules|\\\\.git|bin|obj\\)' })",
+      "PowerShell(bellaboot --help 2>&1)",
+      "PowerShell(Get-ChildItem \"x:\\\\kasparboelkjeldsen\\\\Umbraco.Community.Sinners\" -Depth 2 -Name | Where-Object { $_ -notmatch '^\\(node_modules|\\\\.git|bin|obj\\)' })",
+      "PowerShell(bellaboot ai-help 2>&1)",
+      "PowerShell($dllPath = \"C:\\\\Users\\\\kaskje\\\\.dotnet\\\\tools\\\\.store\\\\umbraco.community.bellaboot\\\\0.2.2\\\\umbraco.community.bellaboot\\\\0.2.2\\\\tools\\\\net9.0\\\\any\\\\bellaboot.dll\"; $bytes = [System.IO.File]::ReadAllBytes\\($dllPath\\); $str = [System.Text.Encoding]::UTF8.GetString\\($bytes\\); $matches = [regex]::Matches\\($str, '\\\\.Extension[\\\\x00-\\\\x7F]{0,50}'\\); $matches | ForEach-Object { $_.Value -replace '[^\\\\x20-\\\\x7E]', ' ' } | Select-Object -Unique | Select-Object -First 20)",
+      "PowerShell(Get-ChildItem \"X:\\\\kasparboelkjeldsen\\\\Umbraco.Community.BellaBoot\" -Depth 3 -Name | Where-Object { $_ -notmatch '^\\(bin|obj|node_modules|\\\\.git\\)' })",
+      "PowerShell(Rename-Item \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\kraftvaerk.umbraco.blockfilter.Frontend\" \"kraftvaerk.umbraco.blockfilter.Extension\")",
+      "PowerShell(cmd /c \"move \"\"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\kraftvaerk.umbraco.blockfilter.Frontend\"\" \"\"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\kraftvaerk.umbraco.blockfilter.Extension\"\"\")",
+      "PowerShell(Move-Item -Path \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\kraftvaerk.umbraco.blockfilter.Frontend\" -Destination \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\kraftvaerk.umbraco.blockfilter.Extension\" -Force)",
+      "PowerShell($base = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\"; Move-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Frontend\\\\src\" \"$base\\\\kraftvaerk.umbraco.blockfilter.Extension\\\\src\"; Move-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Frontend\\\\public\" \"$base\\\\kraftvaerk.umbraco.blockfilter.Extension\\\\public\"; Write-Host \"moved src and public\")",
+      "PowerShell($base = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\"; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Frontend\\\\node_modules\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Extension\\\\node_modules\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Frontend\\\\obj\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Extension\\\\obj\" -Recurse -Force -ErrorAction SilentlyContinue; Write-Host \"done\")",
+      "PowerShell($root = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\"; Get-ChildItem $root -Depth 0 -Name | Where-Object { $_ -notmatch '^\\(Umbraco|\\\\.vs\\)' }; Write-Host \"---Extension---\"; Get-ChildItem \"$root\\\\kraftvaerk.umbraco.blockfilter.Extension\" -Depth 0 -Name)",
+      "PowerShell($umbraco = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\Umbraco\"; $emptyDir = \"x:\\\\kraftvaerk.umbraco\\\\_empty_temp\"; New-Item -ItemType Directory -Path $emptyDir -Force | Out-Null; foreach \\($folder in @\\(\"Umbraco-16.1.1\", \"Umbraco-16.2.0-nuget\", \"Umbraco-17.0.0-beta\", \"Umbraco-17.3.4-nuget\"\\)\\) { $target = \"$umbraco\\\\$folder\"; if \\(Test-Path $target\\) { robocopy $emptyDir $target /MIR /NFL /NDL /NJH /NJS 2>&1 | Out-Null; Remove-Item $target -Recurse -Force; Write-Host \"Deleted $folder\" } }; Remove-Item $emptyDir -Force; Write-Host \"Done\")"
+    ]
+  }
+}

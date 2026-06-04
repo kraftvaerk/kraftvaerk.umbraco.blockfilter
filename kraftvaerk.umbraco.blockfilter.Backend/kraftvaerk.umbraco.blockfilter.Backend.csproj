@@ -37,5 +37,10 @@
 	  </None>
 	  <!-- Include the .props file in the buildTransitive folder so it's automatically imported by consumers -->
   </ItemGroup>
+
+  <Target Name="BuildExtension" AfterTargets="Build">
+    <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\..\kraftvaerk.umbraco.blockfilter.Extension" />
+  </Target>
+
 </Project>
 
