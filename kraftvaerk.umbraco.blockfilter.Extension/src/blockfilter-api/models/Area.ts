@@ -5,9 +5,9 @@
 export type Area = {
     key: string;
     alias: string;
-    columnSpan: number;
-    rowSpan: number;
-    minAllowed: number;
-    specifiedAllowance: Array<any>;
+    columnSpan: number | string;
+    rowSpan: number | string;
+    minAllowed: number | string;
+    specifiedAllowance: any[];
 };
 

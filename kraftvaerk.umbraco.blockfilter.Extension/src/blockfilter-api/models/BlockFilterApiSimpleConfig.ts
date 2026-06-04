@@ -2,9 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type OriginData = {
-    index: number | string;
-    areaKey?: any;
-    parentUnique?: any;
+export type BlockFilterApiSimpleConfig = {
+    enabledBlockKeys: Array<string>;
 };
 

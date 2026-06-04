@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type OriginData = {
-    index: number | string;
-    areaKey?: any;
-    parentUnique?: any;
+export type BlockFilterApiRule = {
+    type: string;
+    blockKey: string;
+    userGroup: string;
+    weight: number | string;
 };
 

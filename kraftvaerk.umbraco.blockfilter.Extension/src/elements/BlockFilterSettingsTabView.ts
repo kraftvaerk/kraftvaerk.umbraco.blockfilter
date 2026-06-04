@@ -228,7 +228,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
     async #loadSavedConfig(props: BlockPropertyEntry[]) {
         try {
             const client = new BlockfilterClient({ TOKEN: OpenAPI.TOKEN, BASE: OpenAPI.BASE });
-            const saved: PropertyConfigJson[] = await client.v1.getApiV1BlockfilterConfiguration({
+            const saved: PropertyConfigJson[] = await client.v1.getBlockfilterConfigurationByDocumentTypeKey({
                 documentTypeKey: this._documentTypeKey!,
             });
             const updatedConfigs = new Map(this._configs);
@@ -368,7 +368,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
         this._saving = true;
         try {
             const client = new BlockfilterClient({ TOKEN: OpenAPI.TOKEN, BASE: OpenAPI.BASE });
-            await client.v1.postApiV1BlockfilterConfiguration({
+            await client.v1.postBlockfilterConfigurationByDocumentTypeKey({
                 documentTypeKey: this._documentTypeKey,
                 requestBody: this.getConfigJson(),
             });

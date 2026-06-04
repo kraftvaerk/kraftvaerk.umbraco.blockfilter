@@ -1,0 +1,12 @@
+[
+  {
+    "propertyAlias": "gridContent",
+    "mode": "simple",
+    "simple": {
+      "enabledBlocks": [
+        "rteBlock"
+      ]
+    },
+    "complex": null
+  }
+]

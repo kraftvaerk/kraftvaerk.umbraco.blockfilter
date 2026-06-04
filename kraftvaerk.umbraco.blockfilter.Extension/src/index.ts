@@ -56,7 +56,7 @@ export const onInit: UmbEntryPointOnInit = async (_host, extensionRegistry) => {
     (async () => {
       try {
         const client = new BlockfilterClient({ TOKEN: OpenAPI.TOKEN, BASE: base });
-        const settings = await client.v1.getApiV1BlockfilterSettings();
+        const settings = await client.v1.getBlockfilterSettings();
         if (settings.enableSettingsTab === true) {
           extensionRegistry.register(settingsTabManifest);
         }

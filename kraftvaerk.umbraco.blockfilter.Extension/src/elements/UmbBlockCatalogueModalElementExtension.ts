@@ -125,7 +125,7 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
       BASE: OpenAPI.BASE
     });
 
-    const response = await bfc.v1.postApiV1BlockfilterRemodel({
+    const response = await bfc.v1.postBlockfilterRemodel({
       requestBody: requestObject
     });
 

@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BlockCatalogueModel } from '../models/BlockCatalogueModel';
+import type { BlockFilterApiConfigModel } from '../models/BlockFilterApiConfigModel';
 import type { BlockFilterSettingsModel } from '../models/BlockFilterSettingsModel';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -12,7 +13,7 @@ export class V1Service {
      * @returns any OK
      * @throws ApiError
      */
-    public getApiV1BlockfilterConfiguration({
+    public getBlockfilterConfigurationByDocumentTypeKey({
         documentTypeKey,
     }: {
         documentTypeKey: string,
@@ -33,12 +34,12 @@ export class V1Service {
      * @returns any OK
      * @throws ApiError
      */
-    public postApiV1BlockfilterConfiguration({
+    public postBlockfilterConfigurationByDocumentTypeKey({
         documentTypeKey,
         requestBody,
     }: {
         documentTypeKey: string,
-        requestBody?: any,
+        requestBody?: (null | Array<BlockFilterApiConfigModel>),
     }): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
@@ -55,13 +56,13 @@ export class V1Service {
         });
     }
     /**
-     * @returns any OK
+     * @returns BlockCatalogueModel OK
      * @throws ApiError
      */
-    public postApiV1BlockfilterRemodel({
+    public postBlockfilterRemodel({
         requestBody,
     }: {
-        requestBody?: BlockCatalogueModel,
+        requestBody: BlockCatalogueModel,
     }): CancelablePromise<BlockCatalogueModel> {
         return this.httpRequest.request({
             method: 'POST',
@@ -77,10 +78,10 @@ export class V1Service {
         });
     }
     /**
-     * @returns any OK
+     * @returns BlockFilterSettingsModel OK
      * @throws ApiError
      */
-    public getApiV1BlockfilterSettings(): CancelablePromise<BlockFilterSettingsModel> {
+    public getBlockfilterSettings(): CancelablePromise<BlockFilterSettingsModel> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/v1/blockfilter/settings',

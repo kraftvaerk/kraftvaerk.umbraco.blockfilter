@@ -4,7 +4,7 @@ By default, Umbraco's Block Catalogue shows every configured block to every edit
 
 It replaces the Block Catalogue Modal with one it controls, and fires a `RemodelBlockCatalogueNotification` each time it opens. Register a handler for that notification and you can filter the available blocks based on anything you have access to at runtime: the current user's groups, the document type being edited, which property editor is open, or anything else.
 
-Requires Umbraco 16.0 or later.
+Supports Umbraco 16.0 or later. (including 18.0.0-rc1+)
 
 ---
 

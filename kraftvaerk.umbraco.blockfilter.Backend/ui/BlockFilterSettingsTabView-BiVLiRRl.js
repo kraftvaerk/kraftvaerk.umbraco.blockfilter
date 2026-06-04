@@ -4,24 +4,24 @@ import { UmbDocumentTypeItemRepository as te, UMB_DOCUMENT_TYPE_WORKSPACE_CONTEX
 import { UmbDataTypeItemRepository as se, UmbDataTypeDetailRepository as oe } from "@umbraco-cms/backoffice/data-type";
 import { UmbUserGroupCollectionRepository as ae } from "@umbraco-cms/backoffice/user-group";
 import { UMB_NOTIFICATION_CONTEXT as ne } from "@umbraco-cms/backoffice/notification";
-import { B as O, O as U } from "./index-BDFE3DaO.js";
+import { B as O, O as U } from "./index-19xJa1Z1.js";
 var le = Object.defineProperty, ce = Object.getOwnPropertyDescriptor, z = (e) => {
   throw TypeError(e);
 }, k = (e, t, i, o) => {
   for (var s = o > 1 ? void 0 : o ? ce(t, i) : t, r = e.length - 1, n; r >= 0; r--)
     (n = e[r]) && (s = (o ? n(t, i, s) : n(s)) || s);
   return o && s && le(t, i, s), s;
-}, P = (e, t, i) => t.has(e) || z("Cannot " + i), T = (e, t, i) => (P(e, t, "read from private field"), i ? i.call(e) : t.get(e)), w = (e, t, i) => t.has(e) ? z("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, i), re = (e, t, i, o) => (P(e, t, "write to private field"), t.set(e, i), i), c = (e, t, i) => (P(e, t, "access private method"), i), S, M, q, A, E, l, R, N, D, F, f, C, L, W, V, x, J, X, H, Y;
+}, P = (e, t, i) => t.has(e) || z("Cannot " + i), T = (e, t, i) => (P(e, t, "read from private field"), i ? i.call(e) : t.get(e)), w = (e, t, i) => t.has(e) ? z("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, i), re = (e, t, i, o) => (P(e, t, "write to private field"), t.set(e, i), i), c = (e, t, i) => (P(e, t, "access private method"), i), S, M, q, I, E, l, R, D, N, F, f, C, L, W, J, x, X, H, V, Y;
 const ue = /* @__PURE__ */ new Set([
   "Umb.PropertyEditorUi.BlockList",
   "Umb.PropertyEditorUi.BlockGrid"
 ]), pe = 1e3;
 let h = class extends Q(Z) {
   constructor() {
-    super(...arguments), w(this, l), w(this, S, new se(this)), w(this, M, new oe(this)), w(this, q, new te(this)), w(this, A, new ae(this)), w(this, E), this._blockProperties = [], this._userGroups = [], this._loading = !0, this._saving = !1, this._configs = /* @__PURE__ */ new Map();
+    super(...arguments), w(this, l), w(this, S, new se(this)), w(this, M, new oe(this)), w(this, q, new te(this)), w(this, I, new ae(this)), w(this, E), this._blockProperties = [], this._userGroups = [], this._loading = !0, this._saving = !1, this._configs = /* @__PURE__ */ new Map();
   }
   connectedCallback() {
-    super.connectedCallback(), c(this, l, D).call(this).catch(
+    super.connectedCallback(), c(this, l, N).call(this).catch(
       (e) => console.error("BlockFilter: failed to load user groups", e)
     ), this.consumeContext(ne, (e) => {
       e && re(this, E, e);
@@ -56,14 +56,14 @@ let h = class extends Q(Z) {
                     <p class="none">No Block List or Block Grid properties found on this document type.</p>
                 </uui-box>
             ` : d`
-            ${this._blockProperties.map((e) => c(this, l, X).call(this, e))}
+            ${this._blockProperties.map((e) => c(this, l, H).call(this, e))}
 
             <div class="actions">
                 <uui-button
                     look="primary"
                     color="positive"
                     ?disabled=${this._saving}
-                    @click=${() => c(this, l, J).call(this)}
+                    @click=${() => c(this, l, X).call(this)}
                 >${this._saving ? "Saving..." : "Save configuration"}</uui-button>
             </div>
         `;
@@ -72,7 +72,7 @@ let h = class extends Q(Z) {
 S = /* @__PURE__ */ new WeakMap();
 M = /* @__PURE__ */ new WeakMap();
 q = /* @__PURE__ */ new WeakMap();
-A = /* @__PURE__ */ new WeakMap();
+I = /* @__PURE__ */ new WeakMap();
 E = /* @__PURE__ */ new WeakMap();
 l = /* @__PURE__ */ new WeakSet();
 R = async function(e) {
@@ -102,16 +102,16 @@ R = async function(e) {
       for (const _ of m)
         _.contentElementTypeKey && p.add(_.contentElementTypeKey);
   }
-  const I = /* @__PURE__ */ new Map();
+  const A = /* @__PURE__ */ new Map();
   if (p.size > 0) {
     const { data: a } = await T(this, q).requestItems([...p]);
     if (a)
       for (const u of a) {
         const m = u.icon || "icon-document";
-        I.set(u.unique, { name: u.name ?? u.unique, icon: m.split(" ")[0] });
+        A.set(u.unique, { name: u.name ?? u.unique, icon: m.split(" ")[0] });
       }
   }
-  const $ = r.map((a) => {
+  const K = r.map((a) => {
     const u = v.get(a.dataType.unique), m = u == null ? void 0 : u.values.find((g) => g.alias === "blocks"), _ = (m == null ? void 0 : m.value) ?? [], G = s.get(a.dataType.unique);
     return {
       name: a.name,
@@ -119,7 +119,7 @@ R = async function(e) {
       editorUiAlias: G.propertyEditorUiAlias,
       dataType: G,
       availableBlocks: _.filter((g) => g.contentElementTypeKey).map((g) => {
-        const b = I.get(g.contentElementTypeKey);
+        const b = A.get(g.contentElementTypeKey);
         return {
           key: g.contentElementTypeKey,
           name: (b == null ? void 0 : b.name) ?? g.contentElementTypeKey,
@@ -127,19 +127,19 @@ R = async function(e) {
         };
       })
     };
-  }), K = new Map(this._configs);
-  for (const a of $)
-    K.has(a.alias) || K.set(a.alias, {
+  }), $ = new Map(this._configs);
+  for (const a of K)
+    $.has(a.alias) || $.set(a.alias, {
       mode: "none",
       enabledBlocks: new Set(a.availableBlocks.map((u) => u.key)),
       rules: []
     });
-  this._configs = K, this._blockProperties = $, this._documentTypeKey && await c(this, l, N).call(this, $), this._loading = !1;
+  this._configs = $, this._blockProperties = K, this._documentTypeKey && await c(this, l, D).call(this, K), this._loading = !1;
 };
-N = async function(e) {
+D = async function(e) {
   var t, i;
   try {
-    const s = await new O({ TOKEN: U.TOKEN, BASE: U.BASE }).v1.getApiV1BlockfilterConfiguration({
+    const s = await new O({ TOKEN: U.TOKEN, BASE: U.BASE }).v1.getBlockfilterConfigurationByDocumentTypeKey({
       documentTypeKey: this._documentTypeKey
     }), r = new Map(this._configs);
     for (const n of s) {
@@ -163,8 +163,8 @@ N = async function(e) {
   } catch {
   }
 };
-D = async function() {
-  const { data: e } = await T(this, A).requestCollection({
+N = async function() {
+  const { data: e } = await T(this, I).requestCollection({
     skip: 0,
     take: pe
   });
@@ -202,7 +202,7 @@ W = function(e) {
     ]
   }), this._configs = o;
 };
-V = function(e, t) {
+J = function(e, t) {
   const i = c(this, l, f).call(this, e), o = new Map(this._configs);
   o.set(e, {
     ...i,
@@ -213,12 +213,12 @@ x = function(e, t, i, o) {
   const s = c(this, l, f).call(this, e), r = s.rules.map((y, v) => v === t ? { ...y, [i]: o } : y), n = new Map(this._configs);
   n.set(e, { ...s, rules: r }), this._configs = n;
 };
-J = async function() {
+X = async function() {
   var e, t;
   if (this._documentTypeKey) {
     this._saving = !0;
     try {
-      await new O({ TOKEN: U.TOKEN, BASE: U.BASE }).v1.postApiV1BlockfilterConfiguration({
+      await new O({ TOKEN: U.TOKEN, BASE: U.BASE }).v1.postBlockfilterConfigurationByDocumentTypeKey({
         documentTypeKey: this._documentTypeKey,
         requestBody: this.getConfigJson()
       }), (e = T(this, E)) == null || e.peek("positive", {
@@ -236,7 +236,7 @@ J = async function() {
     }
   }
 };
-X = function(e) {
+H = function(e) {
   const t = c(this, l, f).call(this, e.alias);
   return d`
             <uui-box headline="${e.name}">
@@ -264,11 +264,11 @@ X = function(e) {
                     </uui-button-group>
                 </div>
 
-                ${t.mode === "none" ? d`<p class="none">No block filtering configured for this property.</p>` : t.mode === "simple" ? c(this, l, H).call(this, e, t) : c(this, l, Y).call(this, e, t)}
+                ${t.mode === "none" ? d`<p class="none">No block filtering configured for this property.</p>` : t.mode === "simple" ? c(this, l, V).call(this, e, t) : c(this, l, Y).call(this, e, t)}
             </uui-box>
         `;
 };
-H = function(e, t) {
+V = function(e, t) {
   return e.availableBlocks.length === 0 ? d`<p class="none">No blocks configured on this editor.</p>` : d`
             <div class="block-grid">
                 ${e.availableBlocks.map(
@@ -338,7 +338,7 @@ Y = function(e, t) {
                             look="secondary"
                             color="danger"
                             compact
-                            @click=${() => c(this, l, V).call(this, e.alias, r)}
+                            @click=${() => c(this, l, J).call(this, e.alias, r)}
                         >
                             <uui-icon name="icon-trash"></uui-icon>
                         </uui-button>
@@ -474,4 +474,4 @@ export {
   h as BlockFilterSettingsTabViewElement,
   ve as default
 };
-//# sourceMappingURL=BlockFilterSettingsTabView-ngwO0s8p.js.map
+//# sourceMappingURL=BlockFilterSettingsTabView-BiVLiRRl.js.map

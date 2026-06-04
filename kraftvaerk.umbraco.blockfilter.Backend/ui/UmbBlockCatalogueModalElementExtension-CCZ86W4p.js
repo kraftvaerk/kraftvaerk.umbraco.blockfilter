@@ -1,14 +1,14 @@
 import { UmbBlockCatalogueModalElement as x, UMB_BLOCK_WORKSPACE_CONTEXT as W } from "@umbraco-cms/backoffice/block";
 import { UMB_DOCUMENT_WORKSPACE_CONTEXT as F } from "@umbraco-cms/backoffice/document";
 import { UMB_VARIANT_WORKSPACE_CONTEXT as X } from "@umbraco-cms/backoffice/workspace";
-import { UMB_MODAL_CONTEXT as V } from "@umbraco-cms/backoffice/modal";
-import { B as H, O as k } from "./index-BDFE3DaO.js";
+import { UMB_MODAL_CONTEXT as H } from "@umbraco-cms/backoffice/modal";
+import { B as J, O as R } from "./index-19xJa1Z1.js";
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const J = (i) => (t, e) => {
+const V = (i) => (t, e) => {
   e !== void 0 ? e.addInitializer(() => {
     customElements.define(i, t);
   }) : customElements.define(i, t);
@@ -53,10 +53,10 @@ const Q = (i) => new G(typeof i == "string" ? i : i + "", void 0, D), Y = (i, t)
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const { is: Z, defineProperty: tt, getOwnPropertyDescriptor: et, getOwnPropertyNames: st, getOwnPropertySymbols: it, getPrototypeOf: rt } = Object, u = globalThis, I = u.trustedTypes, ot = I ? I.emptyScript : "", U = u.reactiveElementPolyfillSupport, g = (i, t) => i, M = { toAttribute(i, t) {
+const { is: Z, defineProperty: tt, getOwnPropertyDescriptor: et, getOwnPropertyNames: st, getOwnPropertySymbols: it, getPrototypeOf: rt } = Object, f = globalThis, I = f.trustedTypes, at = I ? I.emptyScript : "", U = f.reactiveElementPolyfillSupport, v = (i, t) => i, M = { toAttribute(i, t) {
   switch (t) {
     case Boolean:
-      i = i ? ot : null;
+      i = i ? at : null;
       break;
     case Object:
     case Array:
@@ -82,8 +82,8 @@ const { is: Z, defineProperty: tt, getOwnPropertyDescriptor: et, getOwnPropertyN
   }
   return e;
 } }, L = (i, t) => !Z(i, t), N = { attribute: !0, type: String, converter: M, reflect: !1, useDefault: !1, hasChanged: L };
-Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), u.litPropertyMetadata ?? (u.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
-class v extends HTMLElement {
+Symbol.metadata ?? (Symbol.metadata = Symbol("metadata")), f.litPropertyMetadata ?? (f.litPropertyMetadata = /* @__PURE__ */ new WeakMap());
+class g extends HTMLElement {
   static addInitializer(t) {
     this._$Ei(), (this.l ?? (this.l = [])).push(t);
   }
@@ -97,27 +97,27 @@ class v extends HTMLElement {
     }
   }
   static getPropertyDescriptor(t, e, s) {
-    const { get: r, set: o } = et(this.prototype, t) ?? { get() {
+    const { get: r, set: a } = et(this.prototype, t) ?? { get() {
       return this[e];
-    }, set(a) {
-      this[e] = a;
+    }, set(o) {
+      this[e] = o;
     } };
-    return { get: r, set(a) {
-      const l = r == null ? void 0 : r.call(this);
-      o == null || o.call(this, a), this.requestUpdate(t, l, s);
+    return { get: r, set(o) {
+      const n = r == null ? void 0 : r.call(this);
+      a == null || a.call(this, o), this.requestUpdate(t, n, s);
     }, configurable: !0, enumerable: !0 };
   }
   static getPropertyOptions(t) {
     return this.elementProperties.get(t) ?? N;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(g("elementProperties"))) return;
+    if (this.hasOwnProperty(v("elementProperties"))) return;
     const t = rt(this);
     t.finalize(), t.l !== void 0 && (this.l = [...t.l]), this.elementProperties = new Map(t.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(g("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(g("properties"))) {
+    if (this.hasOwnProperty(v("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(v("properties"))) {
       const e = this.properties, s = [...st(e), ...it(e)];
       for (const r of s) this.createProperty(r, e[r]);
     }
@@ -189,32 +189,34 @@ class v extends HTMLElement {
     this._$AK(t, s);
   }
   _$ET(t, e) {
-    var o;
+    var a;
     const s = this.constructor.elementProperties.get(t), r = this.constructor._$Eu(t, s);
     if (r !== void 0 && s.reflect === !0) {
-      const a = (((o = s.converter) == null ? void 0 : o.toAttribute) !== void 0 ? s.converter : M).toAttribute(e, s.type);
-      this._$Em = t, a == null ? this.removeAttribute(r) : this.setAttribute(r, a), this._$Em = null;
+      const o = (((a = s.converter) == null ? void 0 : a.toAttribute) !== void 0 ? s.converter : M).toAttribute(e, s.type);
+      this._$Em = t, o == null ? this.removeAttribute(r) : this.setAttribute(r, o), this._$Em = null;
     }
   }
   _$AK(t, e) {
-    var o, a;
+    var a, o;
     const s = this.constructor, r = s._$Eh.get(t);
     if (r !== void 0 && this._$Em !== r) {
-      const l = s.getPropertyOptions(r), m = typeof l.converter == "function" ? { fromAttribute: l.converter } : ((o = l.converter) == null ? void 0 : o.fromAttribute) !== void 0 ? l.converter : M;
-      this._$Em = r, this[r] = m.fromAttribute(e, l.type) ?? ((a = this._$Ej) == null ? void 0 : a.get(r)) ?? null, this._$Em = null;
+      const n = s.getPropertyOptions(r), $ = typeof n.converter == "function" ? { fromAttribute: n.converter } : ((a = n.converter) == null ? void 0 : a.fromAttribute) !== void 0 ? n.converter : M;
+      this._$Em = r;
+      const d = $.fromAttribute(e, n.type);
+      this[r] = d ?? ((o = this._$Ej) == null ? void 0 : o.get(r)) ?? d, this._$Em = null;
     }
   }
-  requestUpdate(t, e, s) {
-    var r;
+  requestUpdate(t, e, s, r = !1, a) {
+    var o;
     if (t !== void 0) {
-      const o = this.constructor, a = this[t];
-      if (s ?? (s = o.getPropertyOptions(t)), !((s.hasChanged ?? L)(a, e) || s.useDefault && s.reflect && a === ((r = this._$Ej) == null ? void 0 : r.get(t)) && !this.hasAttribute(o._$Eu(t, s)))) return;
+      const n = this.constructor;
+      if (r === !1 && (a = this[t]), s ?? (s = n.getPropertyOptions(t)), !((s.hasChanged ?? L)(a, e) || s.useDefault && s.reflect && a === ((o = this._$Ej) == null ? void 0 : o.get(t)) && !this.hasAttribute(n._$Eu(t, s)))) return;
       this.C(t, e, s);
     }
     this.isUpdatePending === !1 && (this._$ES = this._$EP());
   }
-  C(t, e, { useDefault: s, reflect: r, wrapped: o }, a) {
-    s && !(this._$Ej ?? (this._$Ej = /* @__PURE__ */ new Map())).has(t) && (this._$Ej.set(t, a ?? e ?? this[t]), o !== !0 || a !== void 0) || (this._$AL.has(t) || (this.hasUpdated || s || (e = void 0), this._$AL.set(t, e)), r === !0 && this._$Em !== t && (this._$Eq ?? (this._$Eq = /* @__PURE__ */ new Set())).add(t));
+  C(t, e, { useDefault: s, reflect: r, wrapped: a }, o) {
+    s && !(this._$Ej ?? (this._$Ej = /* @__PURE__ */ new Map())).has(t) && (this._$Ej.set(t, o ?? e ?? this[t]), a !== !0 || o !== void 0) || (this._$AL.has(t) || (this.hasUpdated || s || (e = void 0), this._$AL.set(t, e)), r === !0 && this._$Em !== t && (this._$Eq ?? (this._$Eq = /* @__PURE__ */ new Set())).add(t));
   }
   async _$EP() {
     this.isUpdatePending = !0;
@@ -234,21 +236,21 @@ class v extends HTMLElement {
     if (!this.isUpdatePending) return;
     if (!this.hasUpdated) {
       if (this.renderRoot ?? (this.renderRoot = this.createRenderRoot()), this._$Ep) {
-        for (const [o, a] of this._$Ep) this[o] = a;
+        for (const [a, o] of this._$Ep) this[a] = o;
         this._$Ep = void 0;
       }
       const r = this.constructor.elementProperties;
-      if (r.size > 0) for (const [o, a] of r) {
-        const { wrapped: l } = a, m = this[o];
-        l !== !0 || this._$AL.has(o) || m === void 0 || this.C(o, void 0, a, m);
+      if (r.size > 0) for (const [a, o] of r) {
+        const { wrapped: n } = o, $ = this[a];
+        n !== !0 || this._$AL.has(a) || $ === void 0 || this.C(a, void 0, o, $);
       }
     }
     let t = !1;
     const e = this._$AL;
     try {
       t = this.shouldUpdate(e), t ? (this.willUpdate(e), (s = this._$EO) == null || s.forEach((r) => {
-        var o;
-        return (o = r.hostUpdate) == null ? void 0 : o.call(r);
+        var a;
+        return (a = r.hostUpdate) == null ? void 0 : a.call(r);
       }), this.update(e)) : this._$EM();
     } catch (r) {
       throw t = !1, this._$EM(), r;
@@ -284,76 +286,76 @@ class v extends HTMLElement {
   firstUpdated(t) {
   }
 }
-v.elementStyles = [], v.shadowRootOptions = { mode: "open" }, v[g("elementProperties")] = /* @__PURE__ */ new Map(), v[g("finalized")] = /* @__PURE__ */ new Map(), U == null || U({ ReactiveElement: v }), (u.reactiveElementVersions ?? (u.reactiveElementVersions = [])).push("2.1.0");
-var at = Object.defineProperty, nt = Object.getOwnPropertyDescriptor, z = (i) => {
+g.elementStyles = [], g.shadowRootOptions = { mode: "open" }, g[v("elementProperties")] = /* @__PURE__ */ new Map(), g[v("finalized")] = /* @__PURE__ */ new Map(), U == null || U({ ReactiveElement: g }), (f.reactiveElementVersions ?? (f.reactiveElementVersions = [])).push("2.1.2");
+var ot = Object.getOwnPropertyDescriptor, z = (i) => {
   throw TypeError(i);
-}, ht = (i, t, e, s) => {
-  for (var r = s > 1 ? void 0 : s ? nt(t, e) : t, o = i.length - 1, a; o >= 0; o--)
-    (a = i[o]) && (r = (s ? a(t, e, r) : a(r)) || r);
-  return s && r && at(t, e, r), r;
-}, R = (i, t, e) => t.has(i) || z("Cannot " + e), n = (i, t, e) => (R(i, t, "read from private field"), t.get(i)), d = (i, t, e) => t.has(i) ? z("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(i) : t.set(i, e), _ = (i, t, e, s) => (R(i, t, "write to private field"), t.set(i, e), e), f = (i, t, e) => (R(i, t, "access private method"), e), S, b, A, w, y, O, C, c, q, j, E;
-let h = class extends x {
+}, nt = (i, t, e, s) => {
+  for (var r = s > 1 ? void 0 : s ? ot(t, e) : t, a = i.length - 1, o; a >= 0; a--)
+    (o = i[a]) && (r = o(r) || r);
+  return r;
+}, k = (i, t, e) => t.has(i) || z("Cannot " + e), h = (i, t, e) => (k(i, t, "read from private field"), t.get(i)), u = (i, t, e) => t.has(i) ? z("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(i) : t.set(i, e), y = (i, t, e, s) => (k(i, t, "write to private field"), t.set(i, e), e), _ = (i, t, e) => (k(i, t, "access private method"), e), S, b, A, w, E, O, C, c, q, j, m;
+let l = class extends x {
   constructor() {
-    super(), d(this, c), d(this, S, ""), d(this, b, null), d(this, A, !1), d(this, w, null), d(this, y), d(this, O), d(this, C), _(this, O, new Promise((i) => {
-      _(this, C, i);
+    super(), u(this, c), u(this, S, ""), u(this, b, null), u(this, A, !1), u(this, w, null), u(this, E), u(this, O), u(this, C), y(this, O, new Promise((i) => {
+      y(this, C, i);
     })), this.consumeContext(W, () => {
-      f(this, c, E).call(this);
+      _(this, c, m).call(this);
     }), this.consumeContext(X, (i) => {
-      h.pageId = (i == null ? void 0 : i.getUnique()) ?? "", f(this, c, E).call(this);
+      l.pageId = (i == null ? void 0 : i.getUnique()) ?? "", _(this, c, m).call(this);
     }).passContextAliasMatches(), this.consumeContext(F, (i) => {
       this.observe(i == null ? void 0 : i.contentTypeUnique, (t) => {
-        h.pageTypeId = t ?? "", f(this, c, E).call(this);
+        l.pageTypeId = t ?? "", _(this, c, m).call(this);
       });
-    }).passContextAliasMatches(), this.consumeContext(V, (i) => {
-      _(this, b, (i == null ? void 0 : i.data) ?? null), f(this, c, E).call(this);
+    }).passContextAliasMatches(), this.consumeContext(H, (i) => {
+      y(this, b, (i == null ? void 0 : i.data) ?? null), _(this, c, m).call(this);
     });
   }
   connectedCallback() {
     var i;
-    super.connectedCallback(), f(this, c, q).call(this), (i = this._manager) != null && i.propertyAlias && this.observe(this._manager.propertyAlias, (t) => {
-      _(this, S, t ?? ""), f(this, c, E).call(this);
+    super.connectedCallback(), _(this, c, q).call(this), (i = this._manager) != null && i.propertyAlias && this.observe(this._manager.propertyAlias, (t) => {
+      y(this, S, t ?? ""), _(this, c, m).call(this);
     });
   }
   /**
    * Calls the BlockFilter API and rebuilds the block catalogue with filtered blocks.
    */
   async handleBlocks(i) {
-    var o;
+    var a;
     const t = {
       ...i,
-      pageId: h.pageId,
-      editingAlias: n(this, S),
-      pageTypeId: h.pageTypeId
-    }, s = await new H({
-      TOKEN: k.TOKEN,
-      BASE: k.BASE
-    }).v1.postApiV1BlockfilterRemodel({
+      pageId: l.pageId,
+      editingAlias: h(this, S),
+      pageTypeId: l.pageTypeId
+    }, s = await new J({
+      TOKEN: R.TOKEN,
+      BASE: R.BASE
+    }).v1.postBlockfilterRemodel({
       requestBody: t
     });
-    this.data = { ...s }, _(this, w, ((o = this.data) == null ? void 0 : o.blocks.map((a) => a.contentElementTypeKey.toLowerCase())) ?? []), n(this, C).call(this);
-    const r = n(this, y);
-    this.data.clipboardFilter = async (a) => a.values.flatMap(($) => {
+    this.data = { ...s }, y(this, w, ((a = this.data) == null ? void 0 : a.blocks.map((o) => o.contentElementTypeKey.toLowerCase())) ?? []), h(this, C).call(this);
+    const r = h(this, E);
+    this.data.clipboardFilter = async (o) => o.values.flatMap((d) => {
       var p;
-      return ((p = $.value) == null ? void 0 : p.contentData) || [];
-    }).map(($) => {
+      return ((p = d.value) == null ? void 0 : p.contentData) || [];
+    }).map((d) => {
       var p;
-      return (p = $.contentTypeKey) == null ? void 0 : p.toLowerCase();
-    }).filter(Boolean).every(($) => {
+      return (p = d.contentTypeKey) == null ? void 0 : p.toLowerCase();
+    }).filter(Boolean).every((d) => {
       var p;
-      return (p = n(this, w)) == null ? void 0 : p.includes($);
-    }) ? typeof r == "function" ? await r(a) : !0 : !1, this.connectedCallback();
+      return (p = h(this, w)) == null ? void 0 : p.includes(d);
+    }) ? typeof r == "function" ? await r(o) : !0 : !1, this.connectedCallback();
   }
 };
 S = /* @__PURE__ */ new WeakMap();
 b = /* @__PURE__ */ new WeakMap();
 A = /* @__PURE__ */ new WeakMap();
 w = /* @__PURE__ */ new WeakMap();
-y = /* @__PURE__ */ new WeakMap();
+E = /* @__PURE__ */ new WeakMap();
 O = /* @__PURE__ */ new WeakMap();
 C = /* @__PURE__ */ new WeakMap();
 c = /* @__PURE__ */ new WeakSet();
 q = function() {
-  !this.data || n(this, y) !== void 0 || (_(this, y, this.data.clipboardFilter), this.data = { ...this.data }, this.data.clipboardFilter = async (i) => (await n(this, O), i.values.flatMap((s) => {
+  !this.data || h(this, E) !== void 0 || (y(this, E, this.data.clipboardFilter), this.data = { ...this.data }, this.data.clipboardFilter = async (i) => (await h(this, O), i.values.flatMap((s) => {
     var r;
     return ((r = s.value) == null ? void 0 : r.contentData) || [];
   }).map((s) => {
@@ -361,23 +363,23 @@ q = function() {
     return (r = s.contentTypeKey) == null ? void 0 : r.toLowerCase();
   }).filter(Boolean).every((s) => {
     var r;
-    return (r = n(this, w)) == null ? void 0 : r.includes(s);
-  }) ? typeof n(this, y) == "function" ? await n(this, y).call(this, i) : !0 : !1));
+    return (r = h(this, w)) == null ? void 0 : r.includes(s);
+  }) ? typeof h(this, E) == "function" ? await h(this, E).call(this, i) : !0 : !1));
 };
 j = function() {
-  return !!(n(this, b) && n(this, S) && h.pageId && h.pageTypeId);
+  return !!(h(this, b) && h(this, S) && l.pageId && l.pageTypeId);
 };
-E = function() {
-  n(this, A) || !f(this, c, j).call(this) || (_(this, A, !0), this.handleBlocks(n(this, b)));
+m = function() {
+  h(this, A) || !_(this, c, j).call(this) || (y(this, A, !0), this.handleBlocks(h(this, b)));
 };
-h.pageId = "";
-h.pageTypeId = "";
-h = ht([
-  J("umb-block-catalogue-modal-extend")
-], h);
-const _t = h;
+l.pageId = "";
+l.pageTypeId = "";
+l = nt([
+  V("umb-block-catalogue-modal-extend")
+], l);
+const ft = l;
 export {
-  h as UmbBlockCatalogueModalElementExtension,
-  _t as default
+  l as UmbBlockCatalogueModalElementExtension,
+  ft as default
 };
-//# sourceMappingURL=UmbBlockCatalogueModalElementExtension-CKNnT2eq.js.map
+//# sourceMappingURL=UmbBlockCatalogueModalElementExtension-CCZ86W4p.js.map
