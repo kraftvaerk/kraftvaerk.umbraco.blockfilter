@@ -17,7 +17,8 @@
       "PowerShell($base = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\"; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Frontend\\\\node_modules\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Extension\\\\node_modules\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Frontend\\\\obj\" -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item \"$base\\\\kraftvaerk.umbraco.blockfilter.Extension\\\\obj\" -Recurse -Force -ErrorAction SilentlyContinue; Write-Host \"done\")",
       "PowerShell($root = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\"; Get-ChildItem $root -Depth 0 -Name | Where-Object { $_ -notmatch '^\\(Umbraco|\\\\.vs\\)' }; Write-Host \"---Extension---\"; Get-ChildItem \"$root\\\\kraftvaerk.umbraco.blockfilter.Extension\" -Depth 0 -Name)",
       "PowerShell($umbraco = \"x:\\\\kraftvaerk.umbraco\\\\kraftvaerk.umbraco.blockfilter\\\\Umbraco\"; $emptyDir = \"x:\\\\kraftvaerk.umbraco\\\\_empty_temp\"; New-Item -ItemType Directory -Path $emptyDir -Force | Out-Null; foreach \\($folder in @\\(\"Umbraco-16.1.1\", \"Umbraco-16.2.0-nuget\", \"Umbraco-17.0.0-beta\", \"Umbraco-17.3.4-nuget\"\\)\\) { $target = \"$umbraco\\\\$folder\"; if \\(Test-Path $target\\) { robocopy $emptyDir $target /MIR /NFL /NDL /NJH /NJS 2>&1 | Out-Null; Remove-Item $target -Recurse -Force; Write-Host \"Deleted $folder\" } }; Remove-Item $emptyDir -Force; Write-Host \"Done\")",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Read(//x/kraftvaerk.umbraco/kraftvaerk.umbraco.headless.preview/kraftvaerk.umbraco.headless.preview.Backend/**)"
     ]
   }
 }

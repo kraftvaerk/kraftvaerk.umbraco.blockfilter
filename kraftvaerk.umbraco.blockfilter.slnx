@@ -1,11 +1,11 @@
-﻿<Solution>
+<Solution>
   <Project Path="kraftvaerk.umbraco.blockfilter.Backend/kraftvaerk.umbraco.blockfilter.Backend.csproj" />
   <Project Path="kraftvaerk.umbraco.blockfilter.Extension/kraftvaerk.umbraco.blockfilter.Extension.esproj">
     <Build />
     <Deploy />
   </Project>
   <Folder Name="/Umbraco/">
+    <Project Path="Umbraco/18.0.0-rc1/Umbraco-RCs.csproj" />
     <Project Path="Umbraco/latest/Umbraco-latest.csproj" />
-    <Project Path="Umbraco/18.0.0-rc1/Umbraco-18.0.0-rc1.csproj" />
   </Folder>
 </Solution>
