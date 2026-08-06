@@ -462,9 +462,18 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
             <div class="block-grid">
                 ${prop.availableBlocks.map(
                     (block) => html`
-                        <label class="block-check">
+                        <label
+                            class="block-check"
+                            @click=${() =>
+                                this.#toggleBlock(
+                                    prop.alias,
+                                    block.key,
+                                    !cfg.enabledBlocks.has(block.key),
+                                )}
+                        >
                             <uui-checkbox
                                 ?checked=${cfg.enabledBlocks.has(block.key)}
+                                @click=${(e: Event) => e.stopPropagation()}
                                 @change=${(e: Event) =>
                                     this.#toggleBlock(
                                         prop.alias,
@@ -601,6 +610,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                 border: 1px solid var(--uui-color-border);
                 border-radius: var(--uui-border-radius);
                 cursor: pointer;
+                user-select: none;
             }
             .block-check:hover {
                 background: var(--uui-color-surface-alt);
