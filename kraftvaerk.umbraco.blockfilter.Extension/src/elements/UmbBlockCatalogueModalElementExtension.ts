@@ -11,6 +11,7 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
   #alias = '';
   static pageId = '';
   static pageTypeId = '';
+  #blockOwnerTypeId = '';
   #modalData: unknown | null = null;
   #handled = false;
 
@@ -30,7 +31,12 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
       this.#keysReadyResolve = resolve;
     });
 
-    this.consumeContext(UMB_BLOCK_WORKSPACE_CONTEXT, () => {
+    this.consumeContext(UMB_BLOCK_WORKSPACE_CONTEXT, (blockWorkspaceContext) => {
+      this.observe(blockWorkspaceContext?.content.contentTypeId, (value) => {
+        this.#blockOwnerTypeId = value ?? '';
+        this.#tryHandle();
+      });
+
       this.#tryHandle();
     });
 
@@ -100,7 +106,12 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
   }
 
   #ready(): boolean {
-    return !!(this.#modalData && this.#alias && UmbBlockCatalogueModalElementExtension.pageId && UmbBlockCatalogueModalElementExtension.pageTypeId);
+    return !!(
+      this.#modalData &&
+      this.#alias &&
+      UmbBlockCatalogueModalElementExtension.pageId &&
+      (this.#blockOwnerTypeId || UmbBlockCatalogueModalElementExtension.pageTypeId)
+    );
   }
 
   #tryHandle() {
@@ -113,11 +124,13 @@ export class UmbBlockCatalogueModalElementExtension extends UmbBlockCatalogueMod
    * Calls the BlockFilter API and rebuilds the block catalogue with filtered blocks.
    */
   async handleBlocks(data: any) {
+    const ownerTypeId = this.#blockOwnerTypeId || UmbBlockCatalogueModalElementExtension.pageTypeId;
+
     const requestObject = {
       ...(data as any),
       pageId: UmbBlockCatalogueModalElementExtension.pageId,
       editingAlias: this.#alias,
-      pageTypeId: UmbBlockCatalogueModalElementExtension.pageTypeId
+      pageTypeId: ownerTypeId
     };
 
     const bfc = new BlockfilterClient({
