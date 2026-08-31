@@ -6,6 +6,7 @@ export type BlockFilterApiRule = {
     type: string;
     blockKey: string;
     userGroup: string;
+    rootNode: string;
     weight: number | string;
 };
 

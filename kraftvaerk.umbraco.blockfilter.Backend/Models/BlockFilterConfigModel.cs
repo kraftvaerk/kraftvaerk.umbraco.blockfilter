@@ -46,4 +46,6 @@ public class BlockFilterRule
 
     [JsonPropertyName("weight")]
     public int Weight { get; set; }
+    [JsonPropertyName("rootNode")]
+    public string RootNode { get; set; } = "any";
 }

@@ -37,6 +37,7 @@ interface Rule {
     blockKey: string;
     userGroupUnique: string; // 'everyone' or a real unique
     weight: number;
+    rootNodeKey: string;
 }
 
 type ConfigMode = 'none' | 'simple' | 'complex';
@@ -62,7 +63,7 @@ interface PropertyConfigJson {
     propertyAlias: string;
     mode: ConfigMode;
     simple?: { enabledBlockKeys: string[] };
-    complex?: { rules: Array<{ type: RuleType; blockKey: string; userGroup: string; weight: number }> };
+    complex?: { rules: Array<{ type: RuleType; blockKey: string; userGroup: string; weight: number, rootNode: string }> };
 }
 
 @customElement('blockfilter-settings-tab-view')
@@ -79,6 +80,9 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
 
     @state()
     private _userGroups: Array<{ name: string; unique: string }> = [];
+    
+    @state()
+    private _rootNodes: Array<{ name: string; key: string }> = [];
 
     @state()
     private _loading = true;
@@ -93,11 +97,16 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
     @state()
     private _configs: Map<string, PropertyConfig> = new Map();
 
+
     override connectedCallback() {
         super.connectedCallback();
 
         this.#loadUserGroups().catch((err) =>
             console.error('BlockFilter: failed to load user groups', err),
+        );
+
+        this.#loadRootNodes().catch((err) => 
+            console.error('BlockFilter: failed to load root nodes', err),
         );
 
         this.consumeContext(UMB_NOTIFICATION_CONTEXT, (ctx) => {
@@ -247,6 +256,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                         blockKey: r.blockKey,
                         userGroupUnique: r.userGroup,
                         weight: r.weight,
+                        rootNodeKey: r.rootNode ?? 'any'
                     })),
                 };
                 updatedConfigs.set(entry.propertyAlias, cfg);
@@ -256,6 +266,13 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
         } catch {
             // empty array returned when no config exists — not an error
         }
+    }
+
+  
+    async #loadRootNodes() {
+        const client = new BlockfilterClient({ TOKEN: OpenAPI.TOKEN, BASE: OpenAPI.BASE });
+        const rootNodes = await client.v1.getBlockfilterRootNodes();
+        this._rootNodes = rootNodes.map((n) => ({name: n.name, key: n.key}));
     }
 
     async #loadUserGroups() {
@@ -313,6 +330,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                     blockKey: prop.availableBlocks[0]?.key ?? '',
                     userGroupUnique: 'everyone',
                     weight: 0,
+                    rootNodeKey: 'any',
                 },
             ],
         });
@@ -353,6 +371,7 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                         type: r.type,
                         blockKey: r.blockKey,
                         userGroup: r.userGroupUnique,
+                        rootNode: r.rootNodeKey ?? 'any',
                         weight: r.weight,
                     })),
                 };
@@ -496,6 +515,11 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
             ...this._userGroups.map((g) => ({ name: g.name, value: g.unique })),
         ];
 
+        const rootNodeOptions = [
+            { name: 'Any root node', value: 'any' },
+            ...this._rootNodes.map((n) => ({name: n.name, value: n.key })),
+        ];
+
         const blockOptions = prop.availableBlocks.map((b) => ({
             name: b.name,
             value: b.key,
@@ -534,7 +558,15 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                             @change=${(e: Event) =>
                                 this.#updateRule(prop.alias, idx, 'userGroupUnique', (e.target as HTMLSelectElement).value)}
                         ></uui-select>
+                        <span class="rule-for">at</span>
 
+                        <uui-select
+                            .options=${rootNodeOptions.map((o) => ({
+                                ...o, selected: o.value == rule.rootNodeKey
+                            }))}
+                            @change=${(e: Event) =>
+                                this.#updateRule(prop.alias, idx, 'rootNodeKey', (e.target as HTMLSelectElement).value)}
+                        ></uui-select>
                         <uui-input
                             type="number"
                             class="weight-input"
@@ -630,10 +662,11 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
             .rule-row {
                 display: flex;
                 align-items: center;
+                flex-wrap: wrap;
                 gap: var(--uui-size-space-3);
             }
             .rule-row uui-select {
-                flex: 1;
+                flex: 1 1 140px;
                 min-width: 0;
             }
             .rule-row uui-select:first-child {

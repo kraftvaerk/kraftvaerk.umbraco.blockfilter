@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Events;
+using Umbraco.Cms.Core.Services.Navigation;
 
 namespace kraftvaerk.umbraco.blockfilter.Backend.Handlers;
 
@@ -13,14 +14,17 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
 {
     private readonly string _storageRoot;
     private readonly ILogger<BlockFilterNotificationHandler> _logger;
+    private readonly IDocumentNavigationQueryService _documentNavigationQueryService;
 
     public BlockFilterNotificationHandler(
         IWebHostEnvironment webHostEnvironment,
         ILogger<BlockFilterNotificationHandler> logger,
-        IOptions<BlockFilterOptions> options)
+        IOptions<BlockFilterOptions> options,
+        IDocumentNavigationQueryService documentNavigationQueryService)
     {
         _storageRoot = Path.Combine(webHostEnvironment.ContentRootPath, options.Value.StoragePath);
         _logger = logger;
+        _documentNavigationQueryService = documentNavigationQueryService;
     }
 
     public async Task HandleAsync(RemodelBlockCatalogueNotification notification, CancellationToken cancellationToken)
@@ -73,11 +77,18 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
             {
                 if (block.Alias is null) return true;
 
+                // Find rootNode
+                var currentRootKey = ResolveRootNodeKey(model.ContentId);
+
                 // Find matching rules: block alias matches AND user is in the rule's group (or rule targets everyone)
                 var matchingRules = propertyConfig.Complex.Rules
                     .Where(r => string.Equals(r.Block, block.Alias, StringComparison.OrdinalIgnoreCase))
                     .Where(r => string.Equals(r.UserGroup, "everyone", StringComparison.OrdinalIgnoreCase)
                                 || userGroupAliases.Contains(r.UserGroup))
+                    .Where(r => string.Equals(r.RootNode, "any", StringComparison.OrdinalIgnoreCase)
+                        || (currentRootKey.HasValue
+                            && Guid.TryParse(r.RootNode, out var ruleRootKey)
+                            && ruleRootKey == currentRootKey.Value))
                     .OrderByDescending(r => r.Weight)
                     .ToList();
 
@@ -87,5 +98,23 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
                 return string.Equals(matchingRules[0].Type, "allow", StringComparison.OrdinalIgnoreCase);
             }).ToList();
         }
+    }
+
+    private Guid? ResolveRootNodeKey(string? contentId)
+    {
+        if(!Guid.TryParse(contentId, out var contentKey))
+            return null;
+        
+        if(!_documentNavigationQueryService.TryGetAncestorsOrSelfKeys(contentKey, out var keys))
+        return null;
+
+        foreach(var key in keys)
+        {
+            if(_documentNavigationQueryService.TryGetLevel(key, out var level) && level == 1)
+                return key;
+        }
+
+        return null;
+
     }
 }
