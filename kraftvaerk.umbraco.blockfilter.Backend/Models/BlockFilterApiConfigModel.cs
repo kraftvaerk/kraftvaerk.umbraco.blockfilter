@@ -44,6 +44,9 @@ public class BlockFilterApiRule
     [JsonPropertyName("userGroup")]
     public string UserGroup { get; set; } = "everyone";
 
+    [JsonPropertyName("rootNode")]
+    public string RootNode { get; set; } = "any";
+
     [JsonPropertyName("weight")]
     public int Weight { get; set; }
 }

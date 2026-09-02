@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Asp.Versioning;
 using kraftvaerk.umbraco.blockfilter.Backend.Models;
 using kraftvaerk.umbraco.blockfilter.Backend.Notifications;
@@ -22,8 +16,10 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Web.Common.Authorization;
+using Umbraco.Cms.Core.Services.Navigation;
+using Kraftvaerk.Umbraco.Blockfilter.Backend.Models;
+using Umbraco.Cms.Core.Models;
 
 namespace kraftvaerk.umbraco.blockfilter.Backend.Controllers;
 
@@ -43,6 +39,9 @@ public class BlockFilterController : ControllerBase
     private readonly ILogger<BlockFilterController> _logger;
     private readonly IOptions<BlockFilterOptions> _options;
     private readonly string _storageRoot;
+    private readonly IDocumentNavigationQueryService _documentNavigationQueryService;
+    private readonly IContentService _contentService;
+    private readonly IIdKeyMap _idKeyMap;
 
     public BlockFilterController(
         ICoreScopeProvider scopeProvider,
@@ -51,7 +50,9 @@ public class BlockFilterController : ControllerBase
         IUserGroupService userGroupService,
         ILogger<BlockFilterController> logger,
         IOptions<BlockFilterOptions> options,
-        IWebHostEnvironment webHostEnvironment)
+        IWebHostEnvironment webHostEnvironment,
+        IDocumentNavigationQueryService documentNavigationQueryService,
+        IContentService contentService, IIdKeyMap idKeyMap)
     {
         _coreScopeProvider = scopeProvider ?? throw new ArgumentNullException(nameof(scopeProvider));
         _backOfficeSecurityAccessor = backOfficeSecurityAccessor ?? throw new ArgumentNullException(nameof(backOfficeSecurityAccessor));
@@ -60,6 +61,9 @@ public class BlockFilterController : ControllerBase
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _storageRoot = Path.Combine(webHostEnvironment.ContentRootPath, options.Value.StoragePath);
+        _documentNavigationQueryService = documentNavigationQueryService ?? throw new ArgumentNullException(nameof(documentNavigationQueryService));
+        _contentService = contentService ?? throw new ArgumentNullException(nameof(contentService));
+        _idKeyMap = idKeyMap;
     }
 
     [HttpGet("settings")]
@@ -71,6 +75,42 @@ public class BlockFilterController : ControllerBase
             EnableSettingsTab = _options.Value.EnableSettingsTab
         });
     }
+
+     [HttpGet("root-nodes")]
+     [ProducesResponseType(typeof(IEnumerable<BlockFilterRootNodeModel>), StatusCodes.Status200OK)]
+     public IActionResult GetRootNodes()
+     {
+         if (!_documentNavigationQueryService.TryGetRootKeys(out var rootKeys))
+         {
+             return Ok(new List<BlockFilterRootNodeModel>());
+         }
+
+         var result = new List<BlockFilterRootNodeModel>();
+         foreach (var key in rootKeys)
+         {
+             var idAttempt = _idKeyMap.GetIdForKey(key, UmbracoObjectTypes.Document);
+             if (!idAttempt.Success)
+             {
+                 _logger.LogError("Could not resolve document id for root key {RootKey}", key);
+                 continue;
+             }
+
+             var content = _contentService.GetById(idAttempt.Result);
+             if (content is null)
+             {
+                 continue;
+             }
+
+             result.Add(new BlockFilterRootNodeModel
+             {
+                 Key = content.Key.ToString(),
+                 Name = content.Name ?? content.Key.ToString()
+             });
+         }
+
+         return Ok(result);
+     }
+
 
     [HttpPost("remodel")]
     [ProducesResponseType(typeof(BlockCatalogueModel), StatusCodes.Status200OK)]
@@ -221,6 +261,7 @@ public class BlockFilterController : ControllerBase
                     Type = r.Type,
                     BlockKey = blockAliasToKey.GetValueOrDefault(r.Block, r.Block),
                     UserGroup = r.UserGroup == "everyone" ? "everyone" : groupAliasToKey.GetValueOrDefault(r.UserGroup, r.UserGroup),
+                    RootNode = string.IsNullOrWhiteSpace(r.RootNode) ? "any" : r.RootNode,
                     Weight = r.Weight,
                 }).ToList()
             } : null,
@@ -277,6 +318,7 @@ public class BlockFilterController : ControllerBase
                     Type = r.Type,
                     Block = blockKeyToAlias.GetValueOrDefault(r.BlockKey, r.BlockKey),
                     UserGroup = r.UserGroup == "everyone" ? "everyone" : groupKeyToAlias.GetValueOrDefault(r.UserGroup, r.UserGroup),
+                    RootNode = string.IsNullOrWhiteSpace(r.RootNode) ? "any" : r.RootNode,
                     Weight = r.Weight,
                 }).ToList()
             } : null,

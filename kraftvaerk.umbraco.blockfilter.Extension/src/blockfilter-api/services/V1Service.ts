@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { BlockCatalogueModel } from '../models/BlockCatalogueModel';
 import type { BlockFilterApiConfigModel } from '../models/BlockFilterApiConfigModel';
+import type { BlockFilterRootNodeModel } from '../models/BlockFilterRootNodeModel';
 import type { BlockFilterSettingsModel } from '../models/BlockFilterSettingsModel';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -74,6 +75,19 @@ export class V1Service {
                 401: `The resource is protected and requires an authentication token`,
                 409: `Conflict`,
                 500: `Internal Server Error`,
+            },
+        });
+    }
+    /**
+     * @returns BlockFilterRootNodeModel OK
+     * @throws ApiError
+     */
+    public getBlockfilterRootNodes(): CancelablePromise<Array<BlockFilterRootNodeModel>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/v1/blockfilter/root-nodes',
+            errors: {
+                401: `The resource is protected and requires an authentication token`,
             },
         });
     }

@@ -17,6 +17,7 @@ export type { BlockFilterApiComplexConfig } from './models/BlockFilterApiComplex
 export type { BlockFilterApiConfigModel } from './models/BlockFilterApiConfigModel';
 export type { BlockFilterApiRule } from './models/BlockFilterApiRule';
 export type { BlockFilterApiSimpleConfig } from './models/BlockFilterApiSimpleConfig';
+export type { BlockFilterRootNodeModel } from './models/BlockFilterRootNodeModel';
 export type { BlockFilterSettingsModel } from './models/BlockFilterSettingsModel';
 export type { BlockGroup } from './models/BlockGroup';
 export type { OriginData } from './models/OriginData';
