@@ -80,12 +80,48 @@ public class BlockFilterController : ControllerBase
      [ProducesResponseType(typeof(IEnumerable<BlockFilterRootNodeModel>), StatusCodes.Status200OK)]
      public IActionResult GetRootNodes()
      {
+         var result = new List<BlockFilterRootNodeModel>();
+         var allowedDocumentTypeAliases = _options.Value.AllowedDocumentTypeAliases?.ToHashSet(StringComparer.OrdinalIgnoreCase);
+         var allowedBlockPlacementParentContentIds = _options.Value.AllowedBlockPlacementParentContentIds;
+
+         // If AllowedBlockPlacementParentContentIds is configured, load children of those nodes instead of root nodes
+         if (allowedBlockPlacementParentContentIds is { Length: > 0 })
+         {
+             foreach (var parentId in allowedBlockPlacementParentContentIds)
+             {
+                 var parentContent = _contentService.GetById(parentId);
+                 if (parentContent is null)
+                 {
+                     _logger.LogWarning("Parent content with id {ParentId} not found", parentId);
+                     continue;
+                 }
+
+                 var children = _contentService.GetPagedChildren(parentContent.Id, 0, int.MaxValue, out _);
+                 foreach (var child in children)
+                 {
+                     // Filter by document type alias if configured
+                     if (allowedDocumentTypeAliases is not null && !allowedDocumentTypeAliases.Contains(child.ContentType.Alias))
+                     {
+                         continue;
+                     }
+
+                     result.Add(new BlockFilterRootNodeModel
+                     {
+                         Key = child.Key.ToString(),
+                         Name = child.Name ?? child.Key.ToString()
+                     });
+                 }
+             }
+
+             return Ok(result);
+         }
+
+         // Default behavior: load root nodes
          if (!_documentNavigationQueryService.TryGetRootKeys(out var rootKeys))
          {
              return Ok(new List<BlockFilterRootNodeModel>());
          }
 
-         var result = new List<BlockFilterRootNodeModel>();
          foreach (var key in rootKeys)
          {
              var idAttempt = _idKeyMap.GetIdForKey(key, UmbracoObjectTypes.Document);
@@ -97,6 +133,12 @@ public class BlockFilterController : ControllerBase
 
              var content = _contentService.GetById(idAttempt.Result);
              if (content is null)
+             {
+                 continue;
+             }
+
+             // Filter by document type alias if configured
+             if (allowedDocumentTypeAliases is not null && !allowedDocumentTypeAliases.Contains(content.ContentType.Alias))
              {
                  continue;
              }
