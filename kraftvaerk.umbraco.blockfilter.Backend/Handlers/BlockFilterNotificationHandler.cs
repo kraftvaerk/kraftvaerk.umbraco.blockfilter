@@ -73,22 +73,24 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
                 .ToHashSet(StringComparer.OrdinalIgnoreCase)
                 ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+            // Keys of the content being edited plus every ancestor up to the root. A rule scoped to a node
+            // applies when that node is the content itself or any ancestor of it. This works for real root
+            // nodes (level 1) as well as nodes deeper in the tree exposed via AllowedBlockPlacementParentContentIds.
+            var ancestorOrSelfKeys = ResolveAncestorOrSelfKeys(model.ContentId);
+
             model.Blocks = model.Blocks.Where(block =>
             {
                 if (block.Alias is null) return true;
 
-                // Find rootNode
-                var currentRootKey = ResolveRootNodeKey(model.ContentId);
-
                 // Find matching rules: block alias matches AND user is in the rule's group (or rule targets everyone)
+                // AND the rule targets any node, or a node the current content lives under.
                 var matchingRules = propertyConfig.Complex.Rules
                     .Where(r => string.Equals(r.Block, block.Alias, StringComparison.OrdinalIgnoreCase))
                     .Where(r => string.Equals(r.UserGroup, "everyone", StringComparison.OrdinalIgnoreCase)
                                 || userGroupAliases.Contains(r.UserGroup))
-                    .Where(r => string.Equals(r.RootNode, "any", StringComparison.OrdinalIgnoreCase)
-                        || (currentRootKey.HasValue
-                            && Guid.TryParse(r.RootNode, out var ruleRootKey)
-                            && ruleRootKey == currentRootKey.Value))
+                    .Where(r => string.IsNullOrWhiteSpace(r.RootNode)
+                        || string.Equals(r.RootNode, "any", StringComparison.OrdinalIgnoreCase)
+                        || (Guid.TryParse(r.RootNode, out var ruleRootKey) && ancestorOrSelfKeys.Contains(ruleRootKey)))
                     .OrderByDescending(r => r.Weight)
                     .ToList();
 
@@ -100,21 +102,14 @@ public class BlockFilterNotificationHandler : INotificationAsyncHandler<RemodelB
         }
     }
 
-    private Guid? ResolveRootNodeKey(string? contentId)
+    private HashSet<Guid> ResolveAncestorOrSelfKeys(string? contentId)
     {
-        if(!Guid.TryParse(contentId, out var contentKey))
-            return null;
-        
-        if(!_documentNavigationQueryService.TryGetAncestorsOrSelfKeys(contentKey, out var keys))
-        return null;
+        if (!Guid.TryParse(contentId, out var contentKey))
+            return new HashSet<Guid>();
 
-        foreach(var key in keys)
-        {
-            if(_documentNavigationQueryService.TryGetLevel(key, out var level) && level == 1)
-                return key;
-        }
+        if (!_documentNavigationQueryService.TryGetAncestorsOrSelfKeys(contentKey, out var keys))
+            return new HashSet<Guid>();
 
-        return null;
-
+        return keys.ToHashSet();
     }
 }

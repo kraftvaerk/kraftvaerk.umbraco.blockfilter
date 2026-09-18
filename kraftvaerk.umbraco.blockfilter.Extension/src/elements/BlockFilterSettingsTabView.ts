@@ -516,9 +516,17 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
         ];
 
         const rootNodeOptions = [
-            { name: 'Any root node', value: 'any' },
+            { name: 'Anywhere', value: 'any' },
             ...this._rootNodes.map((n) => ({name: n.name, value: n.key })),
         ];
+
+        // A saved rule may reference a node the endpoint no longer lists (e.g. it was created before
+        // AllowedBlockPlacementParentContentIds / AllowedDocumentTypeAliases were configured, or the node
+        // was deleted). Keep it selectable so the rule is shown truthfully and its value is not silently lost.
+        const rootNodeOptionsFor = (rule: Rule) =>
+            rule.rootNodeKey && !rootNodeOptions.some((o) => o.value === rule.rootNodeKey)
+                ? [...rootNodeOptions, { name: `Unlisted node (${rule.rootNodeKey})`, value: rule.rootNodeKey }]
+                : rootNodeOptions;
 
         const blockOptions = prop.availableBlocks.map((b) => ({
             name: b.name,
@@ -561,8 +569,8 @@ export class BlockFilterSettingsTabViewElement extends UmbElementMixin(LitElemen
                         <span class="rule-for">at</span>
 
                         <uui-select
-                            .options=${rootNodeOptions.map((o) => ({
-                                ...o, selected: o.value == rule.rootNodeKey
+                            .options=${rootNodeOptionsFor(rule).map((o) => ({
+                                ...o, selected: o.value === rule.rootNodeKey
                             }))}
                             @change=${(e: Event) =>
                                 this.#updateRule(prop.alias, idx, 'rootNodeKey', (e.target as HTMLSelectElement).value)}

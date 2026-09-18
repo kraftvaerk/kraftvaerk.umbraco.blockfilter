@@ -343,7 +343,7 @@ const B = {
     alias: C,
     name: "Block Catalogue Modal Extension",
     elementName: "umb-block-catalogue-modal-extend",
-    js: () => import("./UmbBlockCatalogueModalElementExtension-CRxPMQ3I.js"),
+    js: () => import("./UmbBlockCatalogueModalElementExtension-DP0vJKYn.js"),
     // Make sure we win registration ordering if both exist:
     weight: -1e4
   }
@@ -351,7 +351,7 @@ const B = {
   type: "workspaceView",
   alias: "Kraftvaerk.Blockfilter.WorkspaceView.SettingsTab",
   name: "BlockFilter Settings Tab",
-  element: () => import("./BlockFilterSettingsTabView-CUx1d9Am.js"),
+  element: () => import("./BlockFilterSettingsTabView-MzoA5PxQ.js"),
   weight: 100,
   meta: {
     label: "BlockFilter",
@@ -394,4 +394,4 @@ export {
   B as O,
   ne as o
 };
-//# sourceMappingURL=index-CvfmLJdg.js.map
+//# sourceMappingURL=index-CTXYPfj9.js.map

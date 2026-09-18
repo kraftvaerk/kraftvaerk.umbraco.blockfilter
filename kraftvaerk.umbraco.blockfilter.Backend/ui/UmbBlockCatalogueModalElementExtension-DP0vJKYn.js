@@ -2,7 +2,7 @@ import { UmbBlockCatalogueModalElement as X, UMB_BLOCK_WORKSPACE_CONTEXT as x } 
 import { UMB_DOCUMENT_WORKSPACE_CONTEXT as H } from "@umbraco-cms/backoffice/document";
 import { UMB_VARIANT_WORKSPACE_CONTEXT as J } from "@umbraco-cms/backoffice/workspace";
 import { UMB_MODAL_CONTEXT as V } from "@umbraco-cms/backoffice/modal";
-import { B as G, O as I } from "./index-CvfmLJdg.js";
+import { B as G, O as I } from "./index-CTXYPfj9.js";
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -385,4 +385,4 @@ export {
   l as UmbBlockCatalogueModalElementExtension,
   yt as default
 };
-//# sourceMappingURL=UmbBlockCatalogueModalElementExtension-CRxPMQ3I.js.map
+//# sourceMappingURL=UmbBlockCatalogueModalElementExtension-DP0vJKYn.js.map

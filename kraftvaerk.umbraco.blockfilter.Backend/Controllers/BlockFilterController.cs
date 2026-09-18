@@ -81,73 +81,59 @@ public class BlockFilterController : ControllerBase
      public IActionResult GetRootNodes()
      {
          var result = new List<BlockFilterRootNodeModel>();
-         var allowedDocumentTypeAliases = _options.Value.AllowedDocumentTypeAliases?.ToHashSet(StringComparer.OrdinalIgnoreCase);
-         var allowedBlockPlacementParentContentIds = _options.Value.AllowedBlockPlacementParentContentIds;
+         var seen = new HashSet<Guid>();
+         var allowedDocumentTypeAliases = _options.Value.AllowedDocumentTypeAliases is { Length: > 0 } aliases
+             ? aliases.ToHashSet(StringComparer.OrdinalIgnoreCase)
+             : null;
 
-         // If AllowedBlockPlacementParentContentIds is configured, load children of those nodes instead of root nodes
-         if (allowedBlockPlacementParentContentIds is { Length: > 0 })
+         void AddIfAllowed(IContent content)
          {
-             foreach (var parentId in allowedBlockPlacementParentContentIds)
-             {
-                 var parentContent = _contentService.GetById(parentId);
-                 if (parentContent is null)
-                 {
-                     _logger.LogWarning("Parent content with id {ParentId} not found", parentId);
-                     continue;
-                 }
+             if (!seen.Add(content.Key))
+                 return;
 
-                 var children = _contentService.GetPagedChildren(parentContent.Id, 0, int.MaxValue, out _);
-                 foreach (var child in children)
-                 {
-                     // Filter by document type alias if configured
-                     if (allowedDocumentTypeAliases is not null && !allowedDocumentTypeAliases.Contains(child.ContentType.Alias))
-                     {
-                         continue;
-                     }
-
-                     result.Add(new BlockFilterRootNodeModel
-                     {
-                         Key = child.Key.ToString(),
-                         Name = child.Name ?? child.Key.ToString()
-                     });
-                 }
-             }
-
-             return Ok(result);
-         }
-
-         // Default behavior: load root nodes
-         if (!_documentNavigationQueryService.TryGetRootKeys(out var rootKeys))
-         {
-             return Ok(new List<BlockFilterRootNodeModel>());
-         }
-
-         foreach (var key in rootKeys)
-         {
-             var idAttempt = _idKeyMap.GetIdForKey(key, UmbracoObjectTypes.Document);
-             if (!idAttempt.Success)
-             {
-                 _logger.LogError("Could not resolve document id for root key {RootKey}", key);
-                 continue;
-             }
-
-             var content = _contentService.GetById(idAttempt.Result);
-             if (content is null)
-             {
-                 continue;
-             }
-
-             // Filter by document type alias if configured
              if (allowedDocumentTypeAliases is not null && !allowedDocumentTypeAliases.Contains(content.ContentType.Alias))
-             {
-                 continue;
-             }
+                 return;
 
              result.Add(new BlockFilterRootNodeModel
              {
                  Key = content.Key.ToString(),
                  Name = content.Name ?? content.Key.ToString()
              });
+         }
+
+         // Real root nodes (level 1) are always offered, so rules created before
+         // AllowedBlockPlacementParentContentIds was configured keep resolving in the UI.
+         if (_documentNavigationQueryService.TryGetRootKeys(out var rootKeys))
+         {
+             foreach (var key in rootKeys)
+             {
+                 var idAttempt = _idKeyMap.GetIdForKey(key, UmbracoObjectTypes.Document);
+                 if (!idAttempt.Success)
+                 {
+                     _logger.LogError("Could not resolve document id for root key {RootKey}", key);
+                     continue;
+                 }
+
+                 var content = _contentService.GetById(idAttempt.Result);
+                 if (content is not null)
+                     AddIfAllowed(content);
+             }
+         }
+
+         // Additionally offer the children of any configured parent nodes, e.g. site nodes living
+         // under a shared container node.
+         foreach (var parentId in _options.Value.AllowedBlockPlacementParentContentIds ?? [])
+         {
+             var parentContent = _contentService.GetById(parentId);
+             if (parentContent is null)
+             {
+                 _logger.LogWarning("Parent content with id {ParentId} not found", parentId);
+                 continue;
+             }
+
+             var children = _contentService.GetPagedChildren(parentContent.Id, 0, int.MaxValue, out _);
+             foreach (var child in children)
+                 AddIfAllowed(child);
          }
 
          return Ok(result);

@@ -14,14 +14,14 @@ public class BlockFilterOptions
     public string StoragePath { get; set; } = "blockfilter";
 
     /// <summary>
-    /// Optional list of parent content IDs (GUIDs) whose children should be shown in the block placement
-    /// "at" dropdown in the rules builder.
+    /// Optional list of parent content IDs (GUIDs) whose children are offered in the block placement
+    /// "at" dropdown in the rules builder, in addition to the real root nodes.
     /// </summary>
     public Guid[]? AllowedBlockPlacementParentContentIds { get; set; }
 
     /// <summary>
-    /// Optional list of document type aliases used to filter the existing items in the "at" dropdown
-    /// in the rules builder. If specified, only items with these document types will remain visible.
+    /// Optional list of document type aliases used to filter the items in the "at" dropdown
+    /// in the rules builder. If specified, only nodes with these document types are listed.
     /// </summary>
     public string[]? AllowedDocumentTypeAliases { get; set; }
 }
