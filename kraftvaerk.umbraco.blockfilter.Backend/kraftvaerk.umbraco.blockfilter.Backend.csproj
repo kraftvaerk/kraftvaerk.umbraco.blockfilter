@@ -37,8 +37,48 @@
 	  </None>
   </ItemGroup>
 
-  <Target Name="BuildExtension" AfterTargets="Build">
-    <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\..\kraftvaerk.umbraco.blockfilter.Extension" />
+  <!--
+    Build the backoffice UI (Vite) into wwwroot so it ships as static web assets.
+
+    It has to run before the SDK discovers static web assets, not after Build: Vite writes new
+    hashed chunk names and deletes the old ones, so files globbed at evaluation would be missing
+    ("No file exists for the asset" / NU5019).
+
+    Set SkipExtensionBuild=true to build without Node and use the committed output as-is.
+  -->
+  <PropertyGroup>
+    <ExtensionProjectDir>$(MSBuildProjectDirectory)\..\kraftvaerk.umbraco.blockfilter.Extension\</ExtensionProjectDir>
+    <ExtensionOutDir>wwwroot\App_Plugins\kraftvaerk.umbraco.blockfilter.frontend\</ExtensionOutDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ExtensionInputs Include="$(ExtensionProjectDir)src\**;$(ExtensionProjectDir)public\**" />
+    <ExtensionInputs Include="$(ExtensionProjectDir)package.json;$(ExtensionProjectDir)package-lock.json;$(ExtensionProjectDir)vite.config.ts;$(ExtensionProjectDir)tsconfig.json" />
+  </ItemGroup>
+
+  <Target Name="BuildExtension" BeforeTargets="ResolveProjectStaticWebAssets" Condition="'$(SkipExtensionBuild)' != 'true'">
+    <!-- Drop what evaluation globbed. Not with a wildcard Remove: inside a target that only matches files that
+         still exist, and another project instance's Vite run may already have deleted them. -->
+    <PropertyGroup>
+      <_ExtensionOutFullDir>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(ExtensionOutDir)'))</_ExtensionOutFullDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <_ExtensionEvaluatedContent Include="@(Content)" Condition="$([System.String]::Copy('%(Content.FullPath)').StartsWith('$(_ExtensionOutFullDir)', System.StringComparison.OrdinalIgnoreCase))" />
+      <Content Remove="@(_ExtensionEvaluatedContent)" />
+    </ItemGroup>
+
+    <!-- Each target framework builds in parallel and Vite empties its output folder. Building through
+         one shared project instance runs npm once per build, and the other framework waits for it. -->
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="BuildExtensionCore" RemoveProperties="TargetFramework;RuntimeIdentifier" Properties="BlockFilterExtensionBuild=true" />
+
+    <ItemGroup>
+      <Content Include="$(ExtensionOutDir)**" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Vite rewrites dist.js on every build, so it doubles as the up-to-date marker. -->
+  <Target Name="BuildExtensionCore" Inputs="@(ExtensionInputs)" Outputs="$(ExtensionOutDir)dist.js">
+    <Exec Command="npm run build" WorkingDirectory="$(ExtensionProjectDir)" />
   </Target>
 
 </Project>
