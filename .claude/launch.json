@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "umbraco-latest",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "Umbraco/latest/Umbraco-latest.csproj", "--launch-profile", "Umbraco.Web.UI"],
+      "port": 44323,
+      "url": "https://localhost:44323"
+    }
+  ]
+}
