@@ -1,8 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
     <PackageId>Kraftvaerk.Umbraco.Blockfilter</PackageId>
     <Title>Kraftvaerk.Umbraco.Blockfilter</Title>
     <Authors>Kraftvaerk,Kaspar Boel Kjeldsen</Authors>
@@ -26,7 +27,6 @@
 	  <PackageReference Include="Umbraco.Cms" Version="[17.0.0, 19.0.0)" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ui\**" Pack="true" PackagePath="content\ui" />
     <None Include="buildTransitive\**" Pack="true" PackagePath="buildTransitive" />
 	  <!-- Include the schema file in the root of the package -->
 	  <None Include="appsettings-schema.blockfilter.json" Pack="true" PackagePath="\" />
@@ -35,7 +35,6 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 	  </None>
-	  <!-- Include the .props file in the buildTransitive folder so it's automatically imported by consumers -->
   </ItemGroup>
 
   <Target Name="BuildExtension" AfterTargets="Build">

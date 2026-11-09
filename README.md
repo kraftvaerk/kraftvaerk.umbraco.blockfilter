@@ -14,6 +14,8 @@ Supports Umbraco 16.0 or later. (including 18.0.0-rc1+)
 dotnet add package Kraftvaerk.Umbraco.BlockFilter
 ```
 
+The backoffice UI ships as static web assets, so nothing is copied into your site. Earlier versions copied it into `wwwroot/App_Plugins/kraftvaerk.umbraco.blockfilter.frontend` during build. After upgrading you can delete that folder, and the `.gitignore` entry for it if you added one. The build already ignores it.
+
 ---
 
 ## Usage

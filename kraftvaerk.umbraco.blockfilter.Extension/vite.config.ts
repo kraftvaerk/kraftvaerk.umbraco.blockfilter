@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 
-const outDir = process.env.OUT_DIR || './../kraftvaerk.umbraco.blockfilter.Backend/ui';
+const outDir = process.env.OUT_DIR || './../kraftvaerk.umbraco.blockfilter.Backend/wwwroot/App_Plugins/kraftvaerk.umbraco.blockfilter.frontend';
 
 export default defineConfig({
     build: {
